@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-from ish_knee.preprocessing.Dicom.dicomslice import DicomSlice
+from .dicomslice import DicomSlice
 
 @dataclass(frozen=True)
 class DicomSeries:
