@@ -102,5 +102,6 @@ def main():
             f"{first_slice.pixel_array.dtype}"
         )
 
+        ordered_slices = dicom_series.ordered_slices()
 if __name__ == "__main__":
     main()
