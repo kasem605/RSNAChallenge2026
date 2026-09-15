@@ -15,3 +15,4 @@ class DicomValidationResult:
     errors: tuple[str, ...]
 
     
+

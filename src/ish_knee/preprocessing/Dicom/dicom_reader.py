@@ -3,7 +3,7 @@ from pathlib import Path
 import pydicom
 
 from .dicom_series import DicomSeries
-from .dicomslice import DicomSlice
+from .dicom_slice import DicomSlice
 
 
 class DicomSeriesReader:
@@ -72,6 +72,14 @@ class DicomSeriesReader:
                 self._get_image_position(dataset)
             )
 
+           # ----------------------------------------------------------
+            # Image orientation
+            # ----------------------------------------------------------
+
+            image_orientation = (
+                self._get_image_orientation(dataset)
+            )
+
             # ----------------------------------------------------------
             # Create DicomSlice
             # ----------------------------------------------------------
@@ -81,6 +89,7 @@ class DicomSeriesReader:
                     path=file_path,
                     instance_number=instance_number,
                     image_position=image_position,
+                    image_orientation=image_orientation,
                     pixel_array=pixel_array,
                 )
             )
@@ -152,4 +161,42 @@ class DicomSeriesReader:
             float(position[0]),
             float(position[1]),
             float(position[2]),
+        )
+
+    @staticmethod
+    def _get_image_orientation(
+        dataset
+    )-> tuple[
+        float, float, float,
+        float, float, float
+    ] | None:
+        """
+        Read ImageOrientationPatient
+
+        the six values represent:
+            Row direction:
+                (x, y, z)
+            Column direction:
+                (a, y, z)
+        """
+
+        orientation = getattr(
+            dataset,
+            "ImageOrientationPatient",
+            None
+        )
+
+        if orientation is None:
+            return None
+
+        if len(orientation) < 6:
+            return None
+
+        return(
+            float(orientation[0]),
+            float(orientation[1]),
+            float(orientation[2]),        
+            float(orientation[3]),
+            float(orientation[4]),
+            float(orientation[5]),
         )

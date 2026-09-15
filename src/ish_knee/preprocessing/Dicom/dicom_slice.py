@@ -10,6 +10,16 @@ class DicomSlice:
     """
 
     path: Path
+
     instance_number: int
+
     image_position: tuple[float, float, float] | None
+
+    image_orientation: tuple[
+        float, float, float,
+        float, float, float
+    ] | None
+
     pixel_array: np.ndarray | None
+
+    
