@@ -1,8 +1,8 @@
-from data import dataclass
+from dataclasses import dataclass
 
 from .dicom_series import DicomSeries
 
-@dataclass(Frozen=True)
+@dataclass(frozen=True)
 class DicomValidationResult:
 
     """
