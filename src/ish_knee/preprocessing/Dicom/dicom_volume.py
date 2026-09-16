@@ -20,6 +20,9 @@ class DicomVolume:
         """
         Returns the dimensions of the 3-D volume.
         """
+        
+        return self.volume.shape
+
 
     @property
     def slice_count(self) -> int:

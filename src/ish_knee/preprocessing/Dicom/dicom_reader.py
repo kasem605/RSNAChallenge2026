@@ -177,7 +177,7 @@ class DicomSeriesReader:
             Row direction:
                 (x, y, z)
             Column direction:
-                (a, y, z)
+                (x, y, z)
         """
 
         orientation = getattr(
