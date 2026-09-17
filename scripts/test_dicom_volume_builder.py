@@ -2,10 +2,10 @@ from pathlib import Path
 
 from ish_knee.data import DatasetPaths, MetadataReader
 from ish_knee.preprocessing import SeriesSelector
-from ish_knee.preprocessing.Dicom.dicom_reader import (
+from ish_knee.preprocessing.dicom.dicom_reader import (
     DicomSeriesReader,
 )
-from ish_knee.preprocessing.Dicom.dicom_volume_builder import (
+from ish_knee.preprocessing.dicom.dicom_volume_builder import (
     DicomVolumeBuilder,
 )
 

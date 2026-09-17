@@ -2,11 +2,9 @@ import numpy as np
 
 from dataclasses import dataclass
 
-from ..dicom.dicom_volume import DicomVolume
 from ..dicom.dicom_series import DicomSeries
 from .orientation_info import OrientationInfo
 
-@dataclass(frozen=True)
 class OrientationAnalyzer:
     """
     Analyzes the geometric orientation of a DICOM series
@@ -23,7 +21,7 @@ class OrientationAnalyzer:
 
         first_slice = series.slices[0]
 
-        if first_slice.image_position is None:
+        if first_slice.image_orientation is None:
             raise ValueError(
                 "DICOM series does not contain ImageOrientationPatient."
             )
@@ -61,14 +59,14 @@ class OrientationAnalyzer:
                 float(row_direction[2]),
             ),
             column_direction=(
-                float(row_direction[0]),
-                float(row_direction[1]),
-                float(row_direction[2]),
+                float(column_direction[0]),
+                float(column_direction[1]),
+                float(column_direction[2]),
             ),
             slice_normal=(
-                float(row_direction[0]),
-                float(row_direction[1]),
-                float(row_direction[2]),
+                float(slice_normal[0]),
+                float(slice_normal[1]),
+                float(slice_normal[2]),
             ),
             anatomical_plane=anatomical_plane
         )

@@ -19,7 +19,7 @@ from ish_knee.preprocessing import(
      SeriesSelector
 )
 
-from ish_knee.preprocessing.Dicom import(
+from ish_knee.preprocessing.dicom import(
     DicomSeriesReader,
     DicomSeriesValidator
 )

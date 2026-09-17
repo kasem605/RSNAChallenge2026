@@ -1,7 +1,7 @@
 from pathlib import Path
 import numpy as np
 
-from ish_knee.preprocessing.Dicom.dicom_volume import DicomVolume
+from ish_knee.preprocessing.dicom.dicom_volume import DicomVolume
 
 def main():
 

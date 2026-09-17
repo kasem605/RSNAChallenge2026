@@ -12,9 +12,9 @@ src/ish_knee/preprocessing/intensity.py
 src/ish_knee/preprocessing/sampler.py
 src/ish_knee/preprocessing/series_selector.py
 src/ish_knee/preprocessing/slice_sorter.py
-src/ish_knee/preprocessing/Dicom/dicom_reader.py
-src/ish_knee/preprocessing/Dicom/dicom_series.py
-src/ish_knee/preprocessing/Dicom/dicomslice.py
+src/ish_knee/preprocessing/dicom/dicom_reader.py
+src/ish_knee/preprocessing/dicom/dicom_series.py
+src/ish_knee/preprocessing/dicom/dicomslice.py
 src/ish_knee_ai.egg-info/PKG-INFO
 src/ish_knee_ai.egg-info/SOURCES.txt
 src/ish_knee_ai.egg-info/dependency_links.txt

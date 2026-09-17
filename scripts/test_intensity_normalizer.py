@@ -1,6 +1,6 @@
 import numpy as np
 from pathlib import Path
-from ish_knee.preprocessing.Dicom.dicom_volume import DicomVolume
+from ish_knee.preprocessing.dicom.dicom_volume import DicomVolume
 from ish_knee.preprocessing.volume.intensity_normalizer import IntensityNormalizer
 
 from pathlib import Path
