@@ -1,4 +1,4 @@
-from ..Dicom.dicom_volume import DicomVolume
+from ..dicom.dicom_volume import DicomVolume
 
 import numpy as np
 
