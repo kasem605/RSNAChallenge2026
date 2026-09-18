@@ -1,108 +1,139 @@
-import sys
 from pathlib import Path
 
 import numpy as np
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-
-sys.path.insert(
-    0,
-    str(PROJECT_ROOT / "src")
-)
-
 from ish_knee.preprocessing.dicom.dicom_volume import DicomVolume
-from ish_knee.preprocessing.volume.orientation_info import OrientationInfo
+from ish_knee.preprocessing.volume.orientation_transform import OrientationTransform
 from ish_knee.preprocessing.volume.orientation_transformer import OrientationTransformer
 
-print("=" * 70)
-print("ORIENTATION TRANSFORMER TEST")
-print("=" * 70)
+def main():
 
-# ------------------------------------------------------------------------
-# Create synthetic volume
-# ------------------------------------------------------------------------
 
-original_volume = np.arange(
-    24,
-    dtype=np.float32
-).reshape(
-    2,
-    3,
-    4
-)
+    print("=" * 70)
+    print("ORIENTATION TRANSFORMER TEST")
+    print("=" * 70)
 
-volume = DicomVolume(
-    study_instance_uid="TEST-STUDY",
-    series_instance_uid="TEST-SERIES",
-    volume=original_volume,
-    source_path=Path(r"D:\test")
-)
+    # ------------------------------------------------------------------------
+    # Create a known 3-D volume
+    # ------------------------------------------------------------------------
 
-# ------------------------------------------------------------------------
-# Create synthetic orientation information
-# ------------------------------------------------------------------------
+    original = np.arange(
+        24,
+    ).reshape(
+        2,
+        3,
+        4
+    )
 
-orientation = OrientationInfo(
-    row_direction=(
-        1.0,
-        0.0,
-        0.0
-    ),
-    column_direction=(
-        0.0,
-        1.0,
-        0.0
-    ),
-    slice_normal=(
-        0.0,
-        0.0,
-        1.0
-    ), 
-    anatomical_plane="axial"       
-)
+    volume = DicomVolume(
+        study_instance_uid="TEST-STUDY",
+        series_instance_uid="TEST-SERIES",
+        volume=original,
+        source_path=Path(r"D:\test")
+    )
 
-# ------------------------------------------------------------------------
-# Transform
-# ------------------------------------------------------------------------
+    transformer = OrientationTransformer()
 
-transformer = OrientationTransformer()
+    # ------------------------------------------------------------------------
+    # Test 1: Axis permutation
+    # ------------------------------------------------------------------------
 
-result = transformer.transform( volume, orientation)
+    transformation = OrientationTransform(
+        axis_order=(2, 1, 0),
+        flip_axis_0=False,
+        flip_axis_1=False,
+        flip_axis_2=False,
+    )
 
-# ------------------------------------------------------------------------
-# Validate
-# ------------------------------------------------------------------------
+    result = transformer.transform(volume, transformation)
 
-print()
-print("Original shape:  ", volume.shape)
-print("Transformed shape:", result.shape)
+    expected = np.transpose(original, axes=(2, 1, 0))
 
-print()
-print("Original volume:")
-print(volume.volume)
+    assert np.array_equal(result.volume, expected)
 
-print()
-print("Transformed volume:")
-print(result.volume)
+    print("Axis permutation test:       PASSED")
 
-assert result.shape == volume.shape
+    # ------------------------------------------------------------------------
+    # Test 2: Axis flip
+    # ------------------------------------------------------------------------
 
-assert np.array_equal(
-    result.volume,
-    volume.volume
-)
+    transformation = OrientationTransform(
+            axis_order=(2, 1, 0),
+            flip_axis_0=True,
+            flip_axis_1=False,
+            flip_axis_2=False,
+        )
 
-assert result.study_instance_uid == (volume.study_instance_uid)
+    result = transformer.transform(volume, transformation)
 
-assert result.series_instance_uid == (volume.series_instance_uid)
+    expected = np.flip(expected, axis=0)
+    
+    assert np.array_equal(result.volume, expected)
 
-assert result.source_path == volume.source_path
+    print("Axis flip test:     PASSED")
 
-# Verify that the result is a copy rather than 
-# the same Numpy array
+    # ------------------------------------------------------------------------
+    # Test 3: Combined permutation + flips
+    # ------------------------------------------------------------------------
 
-assert result.volume is not volume.volume
+    transformation = OrientationTransform(
+        axis_order=(2, 1, 0),
+        flip_axis_0=True,
+        flip_axis_1=False,
+        flip_axis_2=True,
+    )
 
-print()
-print("=" * 70)
-print("ORIENTATION TRANSFORMER TEST PASSED")
+    result = transformer.transform(volume, transformation)
+
+    # perform the same operations imdependently
+    expected = original
+
+    #first tyranspose\
+    expected = np.transpose(original, axes=(2, 1, 0))
+
+    # second: flip output axis 0
+    expected = np.flip(expected, axis=0)
+
+    # third: flip output axis 2
+    expected = np.flip(expected, axis=2)
+
+    print("Result shape:    ", result.volume.shape)
+    print("Expected shape:    ", expected.shape)
+
+    assert np.array_equal(result.volume, expected)
+
+    print("Comdined transformation:     PASSED")
+
+    # ------------------------------------------------------------------------
+    # verify metadata
+    # ------------------------------------------------------------------------    
+
+    assert result.study_instance_uid == "TEST-STUDY"
+    assert result.series_instance_uid == "TEST-SERIES"   
+    assert result.source_path == Path(r"D:\test")
+
+    print("Maintain preservation:   PASSED")
+
+    # ------------------------------------------------------------------------
+    # verify original laws was not modified
+    # ------------------------------------------------------------------------  
+
+    assert np.array_equal(volume.volume, original)
+
+    print("Original volume unchanged:   PASSED")
+
+    # ------------------------------------------------------------------------
+    # verify contiguous memory
+    # ------------------------------------------------------------------------  
+
+    assert result.volume.flags["C_CONTIGUOUS"]
+
+    print("Contiguous memory:       PASSED")
+
+    print()
+    print("ORIENTATION TRANSFORMER TEST PASSED")
+    print("=" * 70)
+
+if __name__ == "__main__":
+    main()
+

@@ -2,30 +2,29 @@ from dataclasses import dataclass
 import numpy as np
 
 from ..dicom.dicom_volume import DicomVolume
-from .orientation_info import OrientationInfo
+from .orientation_transform import OrientationTransform
 
 @dataclass
 class OrientationTransformer:
 
     """
-    Transforms a DICOM volume into a consistent orientation.
+    Applies an OrientationTransform to a DICOM volume.
 
-    The initial implementation prserves the existing volume
-    orientation.  Actual axis transformations will be added after
-    the target orientation convention has been verified.
+    Axis permutation is applied first.
+    Axis flips are then applied to the resulting volume
     """
 
     def transform(
             self,
             volume: DicomVolume,
-            orientation: OrientationInfo
+            transformation: OrientationTransform
     ) -> DicomVolume:
 
         if not isinstance(volume, DicomVolume):
             raise TypeError("Expected a DicomVolume instance.")
 
-        if not isinstance(orientation, OrientationInfo):
-            raise TypeError("Expected an OrientationInfo instance.")
+        if not isinstance(transformation, OrientationTransform):
+            raise TypeError("Expected an OrientationTransform instance.")
 
         if volume.volume.ndim != 3:
             raise ValueError("MRI volume must be 3-dimensional.")
@@ -35,6 +34,42 @@ class OrientationTransformer:
             copy=True
         )
 
+
+        # ----------------------------------------------------------------
+        # Step 1: Permute the axis
+        # ----------------------------------------------------------------
+
+        transformed_volume = np.transpose(
+            volume.volume,
+            axes = transformation.axis_order
+        )
+
+        # ----------------------------------------------------------------
+        # Step 2: Apply flips
+        # ----------------------------------------------------------------
+
+        if transformation.flip_axis_0:
+            transformed_volume = np.flip(
+                transformed_volume,
+                axis =0
+            )
+
+        if transformation.flip_axis_1:
+            transformed_volume = np.flip(
+                transformed_volume,
+                axis =1
+            )       
+
+        if transformation.flip_axis_2:
+            transformed_volume = np.flip(
+                transformed_volume,
+                axis =2
+            ) 
+
+        #  Make the resulting array contiguous in memory
+        transformed_volume = np.ascontiguousarray(
+            transformed_volume
+        )
         return DicomVolume(
             study_instance_uid=volume.study_instance_uid,
             series_instance_uid=volume.series_instance_uid,
