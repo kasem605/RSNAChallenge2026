@@ -1,34 +1,32 @@
 from dataclasses import dataclass
-from typing import Optional
 from pathlib import Path
+from typing import Optional
 
 import pandas as pd
+
 
 @dataclass(frozen=True)
 class SelectedSeries:
     """
     Represents the preferred MRI series for one
-    anatomical plane
+    anatomical plane.
     """
 
     study_instance_uid: str
     series_instance_uid: str
-
     anatomical_plane: str
 
     fluid_sensitive: bool
     fat_suppression: bool
 
     file_count: int
-
     series_path: str
 
 
 @dataclass(frozen=True)
 class StudySeriesSelection:
-
     """
-    Contains the selected MRI series for a study
+    Contains the selected MRI series for a study.
     """
 
     study_instance_uid: str
@@ -37,30 +35,36 @@ class StudySeriesSelection:
     coronal: Optional[SelectedSeries]
     axial: Optional[SelectedSeries]
 
+
 class SeriesSelector:
     """
-    Selects the preferred MRI series for 
-    each anatomical plane
+    Selects the preferred MRI series for
+    each anatomical plane.
     """
 
     PLANE_ORDER = (
         "sagittal",
         "coronal",
-        "axial"
+        "axial",
     )
 
     def __init__(self, train_series_dir: Path):
         self.train_series_dir = train_series_dir
 
-    def _get_series_path(self, study_uid: str, series_uid: str) -> Path:
-        return(
+    def _get_series_path(
+        self,
+        study_uid: str,
+        series_uid: str,
+    ) -> Path:
+        return (
             self.train_series_dir
             / str(study_uid)
             / str(series_uid)
         )
 
-    def _get_file_count(self, series_path: Path) -> int:
-        if not series_path.exists():
+    @staticmethod
+    def _get_file_count(series_path: Path) -> int:
+        if not series_path.is_dir():
             return 0
 
         return sum(
@@ -69,14 +73,17 @@ class SeriesSelector:
             if file.is_file()
         )
 
-    def select(self, study_uid: str, series: pd.DataFrame) -> StudySeriesSelection:
+    def select(
+        self,
+        study_uid: str,
+        series: pd.DataFrame,
+    ) -> StudySeriesSelection:
 
         study_series = series[
             series["StudyInstanceUID"] == study_uid
         ].copy()
 
         return StudySeriesSelection(
-
             study_instance_uid=study_uid,
 
             sagittal=self._select_plane(
@@ -92,10 +99,15 @@ class SeriesSelector:
             axial=self._select_plane(
                 study_series,
                 "axial",
-            )
+            ),
         )
 
-    def _select_plane( self, series: pd.DataFrame, plane: str )-> Optional[SelectedSeries]:
+    def _select_plane(
+        self,
+        series: pd.DataFrame,
+        plane: str,
+    ) -> Optional[SelectedSeries]:
+
         candidates = series[
             series["Anatomical_Plane"]
             .astype(str)
@@ -103,17 +115,21 @@ class SeriesSelector:
             == plane
         ].copy()
 
-        candidates["_series_path"] =  candidates.apply(
-            lambda row: str (
+        # No series available for this plane.
+        if candidates.empty:
+            return None
+
+        candidates["_series_path"] = candidates.apply(
+            lambda row: str(
                 self._get_series_path(
                     str(row["StudyInstanceUID"]),
-                    str(row["SeriesInstanceUID"])
+                    str(row["SeriesInstanceUID"]),
                 )
             ),
-            axis = 1
+            axis=1,
         )
 
-        candidates["_file_count"] =  (
+        candidates["_file_count"] = (
             candidates["_series_path"]
             .apply(
                 lambda path: self._get_file_count(
@@ -127,9 +143,8 @@ class SeriesSelector:
         )
 
         best = candidates.iloc[0]
-        
-        return SelectedSeries(
 
+        return SelectedSeries(
             study_instance_uid=str(
                 best["StudyInstanceUID"]
             ),
@@ -151,47 +166,31 @@ class SeriesSelector:
             file_count=int(
                 best["_file_count"]
             ),
-            
+
             series_path=str(
                 best["_series_path"]
-            )       
-        )
-
-    def _get_series_path(self, study_uid: str, series_uid: str) -> Path:
-        return (
-            self.train_series_dir
-            / str(study_uid)
-            / str(series_uid)
+            ),
         )
 
     @staticmethod
-    def _get_file_count(series_path: Path) -> int:
-        if not series_path.is_dir():
-            return 0
+    def _score_candidates(
+        candidates: pd.DataFrame,
+    ) -> pd.DataFrame:
 
-        return sum(
-            1
-            for file in series_path.iterdir()
-            if file.is_file()
-        )
-
-    @staticmethod
-    def _score_candidates(candidates: pd.DataFrame) -> pd.DataFrame:
-
-        candidates=candidates.copy()
+        candidates = candidates.copy()
 
         candidates["_fluid_score"] = (
             candidates["Fluid_Sensitive"]
-            .apply( SeriesSelector._to_bool)
+            .apply(SeriesSelector._to_bool)
             .astype(int)
         )
 
         candidates["_fat_score"] = (
             candidates["Fat_Suppression"]
-            .apply( SeriesSelector._to_bool)
+            .apply(SeriesSelector._to_bool)
             .astype(int)
         )
-    
+
         candidates["_file_count_score"] = (
             candidates["_file_count"]
         )
@@ -200,13 +199,15 @@ class SeriesSelector:
             by=[
                 "_fluid_score",
                 "_fat_score",
-                "_file_count_score"
+                "_file_count_score",
+                "SeriesInstanceUID",
             ],
             ascending=[
                 False,
                 False,
-                False
-            ]
+                False,
+                True,
+            ],
         )
 
         return candidates
@@ -221,14 +222,11 @@ class SeriesSelector:
             return False
 
         if isinstance(value, str):
-
             return value.strip().lower() in {
                 "true",
                 "1",
                 "yes",
-                "y"
+                "y",
             }
 
         return bool(value)
-
-

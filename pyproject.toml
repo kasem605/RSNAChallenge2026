@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ish_knee_ai"
+version = "0.1.0"
+description = "RSNA Knee Abnormality Detection Challenge"
+requires-python = ">=3.14.5"
+
+[tool.setuptools.packages.find]
+where = ["src"]
