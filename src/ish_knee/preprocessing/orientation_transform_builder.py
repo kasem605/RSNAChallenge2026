@@ -37,7 +37,7 @@ class OrientationTransformBuilder:
         )
 
     @staticmethod
-    def __determine_axis_order(row_direction: np.ndarray, 
+    def _determine_axis_order(row_direction: np.ndarray, 
                                column_direction: np.ndarray, 
                                slice_normal: np.ndarray) -> tuple[int, int, int]:
 
