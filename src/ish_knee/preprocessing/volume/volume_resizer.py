@@ -46,6 +46,6 @@ class VolumeResizer:
         return DicomVolume(
             study_instance_uid=volume.study_instance_uid,
             series_instance_uid=volume.series_instance_uid,
-            vol = resized_volume,
-            source_path=volume.source_path op[-0]
+            volume = resized_volume,
+            source_path=volume.source_path
         )
