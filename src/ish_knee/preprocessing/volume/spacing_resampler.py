@@ -1,10 +1,10 @@
 import numpy as np
-from scipy import zoom
+from scipy.ndimage import zoom
 
 from ..dicom.dicom_volume import DicomVolume
 from .voxel_spacing import VoxelSpacing
 
-class SPacingSampler:
+class ScacingResampler:
 
     """
     Resamples a 3-D MRI volume from its current physical
@@ -37,10 +37,10 @@ class SPacingSampler:
 
         target = np.array(target_spacing.as_tuple, dtype=float)     
 
-        if np.any(current_spacing <= 0):
+        if np.any(current <= 0):
             raise ValueError("Current voxel spacing values must be greater tha zero")
 
-        if np.any(target_spacing <= 0):
+        if np.any(target <= 0):
             raise ValueError("Target voxel spacing values must be greater tha zero")
 
         # --------------------------------------------------------------------------
