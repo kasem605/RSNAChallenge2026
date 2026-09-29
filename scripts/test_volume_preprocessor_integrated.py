@@ -9,7 +9,7 @@ def main():
 
     print()
     print("=" * 70)
-    print("VOLUME PREPROCESSOR RESIZE + PAD TEST")
+    print("INTEGRATED VOLUME PREPROCESSOR TEST")
     print("=" * 70)
 
     # ---------------------------------------------------------------
@@ -19,6 +19,10 @@ def main():
     original_array = np.ones(
         (6, 8, 10),
         dtype=np.float32
+    ).reshape(
+        6,
+        8,
+        10
     )
 
     volume = DicomVolume(
@@ -43,16 +47,7 @@ def main():
     )
 
     # ---------------------------------------------------------------
-    # Target configuration
-    #
-    # Current: (6, 8, 10)
-    # Traget:  (8, 6, 12)
-    #
-    # Expected:
-    #
-    # axis 0: 6 -> 6, then pad to 8
-    # axis 1: 8 -> 6, resize down
-    # axis 2: 10 -> 10, then pad to 12
+    # Preprocessing configuration
     # ---------------------------------------------------------------
 
     config = PreprocessingConfig(
@@ -61,46 +56,43 @@ def main():
             spacing_axis_1=1.0,
             spacing_axis_2=1.0
         ),
-        target_shape=(8, 6, 12),
+        target_shape=(8, 10, 12),
         normalize_intensity=True,
         padding_value=0.0
     )
 
+    print("Target shape:")
+    print(config.target_shape)
+
+    print()
+    print("Normalization enabled:")
+    print(config.normalize_intensity)
+
+    # ----------------------------------------------------------------
+    # Run complete preprocessing pipeline
+    # ----------------------------------------------------------------
+
     preprocessor = VolumePreprocessor(config=config)
-
-    # ----------------------------------------------------------------
-    # Process
-    # ----------------------------------------------------------------
-
     
     result = preprocessor.preprocess(
         volume=volume,
         current_spacing=current_spacing
     )
 
-    print()
-    print("Original shape:")
-    print(volume.volume.shape)
-
-    print()
-    print("Target shape:")
-    print(config.target_shape)
+    # ----------------------------------------------------------------
+    # Verify shape
+    # ----------------------------------------------------------------
 
     print()
     print("Result shape:")
     print(result.volume.shape)
-
-    # ----------------------------------------------------------------
-    # Verify final shape
-    # ----------------------------------------------------------------
-
     assert result.volume.shape == (
         8,
-        6,
+        10,
         12
     )
 
-    print("Final shape: PASS")
+    print("Shape: PASS")
 
     # ----------------------------------------------------------------
     # Verify metadata
@@ -113,12 +105,20 @@ def main():
     print("Metadata preservation: PASS")
 
     # ----------------------------------------------------------------
-    # Verify output
+    # Verify Numpy output
     # ----------------------------------------------------------------
 
     assert isinstance(result.volume, np.ndarray)
 
     print("Numpy output: PASS")
+
+    # ----------------------------------------------------------------
+    # Verify floating-point output
+    # ----------------------------------------------------------------
+
+    assert np.issubdtype(result.volume.dtype, np.floating)
+
+    print("Floating-point output: PASS")
 
     # ----------------------------------------------------------------
     # Verify original unchanged
@@ -130,6 +130,25 @@ def main():
     )
 
     print("Original volume unchanged: PASS")
+
+    # ----------------------------------------------------------------
+    # Verify normalization
+    # ----------------------------------------------------------------
+
+    minimum = np.min(result.volume)
+    maximum = np.max(result.volume)
+
+    print()
+    print("Normalization minimum:")
+    print(minimum)
+
+    print("Normalization maximum:")
+    print(maximum)
+
+    assert minimum >= 0.0
+    assert maximum <= 1.0
+
+    print("Intensity range [0, 1]: PASS")
 
     # ----------------------------------------------------------------
     # Verify contiguous memory

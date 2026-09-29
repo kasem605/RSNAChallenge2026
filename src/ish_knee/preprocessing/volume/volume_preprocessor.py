@@ -117,11 +117,11 @@ class VolumePreprocessor:
         # Step 4: Normalize intensity
         # ----------------------------------------------------------------
 
-        if self._config.normal_intensity:
+        if self._config.normalize_intensity:
             processed_volume = (
                 self._intensity_normalizer.normalize(
                     volume=processed_volume
                 )
             )
-            
+
         return processed_volume

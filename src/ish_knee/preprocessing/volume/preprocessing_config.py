@@ -13,7 +13,7 @@ class PreprocessingConfig:
     target_spacing: VoxelSpacing
     target_shape: tuple[int, int, int]
 
-    normal_intensity: bool = True
+    normalize_intensity: bool = True
 
     padding_value: float = 0.0
 
