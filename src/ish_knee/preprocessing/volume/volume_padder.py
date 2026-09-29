@@ -34,12 +34,12 @@ class VolumePadder:
             raise ValueError("Target shape must contain exactly 3-diumensions")
 
         if any(
-            dimension <= 3
+            dimension <= 0
             for dimension in target_shape
             ):
             raise ValueError("Target dimensions must be greater than zero")
 
-        current_shape = volume.shape
+        current_shape = volume.volume.shape
 
         if any(
             target < current
@@ -57,18 +57,22 @@ class VolumePadder:
 
             padding.append((before, after))
 
-            padding_volume = np.pad(
-                volume.volume,
-                pad_width=padding,
-                mode="constant",
-                constant_values=constant_value
-            )
+        # ----------------------------------------------------------------------
+        # Apply padding after all three axes have been calculated
+        # ----------------------------------------------------------------------
+        
+        padded_volume = np.pad(
+            volume.volume,
+            pad_width=padding,
+            mode="constant",
+            constant_values=constant_value
+        )
 
-            padding_volume = np.ascontiguousarray(padding_volume)
+        padding_volume = np.ascontiguousarray(padded_volume)
 
-            return DicomVolume(
-                study_instance_uid=volume.study_instance_uid,
-                series_instance_uid=volume.series_instance_uid,
-                volume=padding_volume,
-                source_path=volume.source_path
-            )
+        return DicomVolume(
+            study_instance_uid=volume.study_instance_uid,
+            series_instance_uid=volume.series_instance_uid,
+            volume=padded_volume,
+            source_path=volume.source_path
+        )

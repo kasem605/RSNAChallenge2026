@@ -4,7 +4,7 @@ from scipy.ndimage import zoom
 from ..dicom.dicom_volume import DicomVolume
 from .voxel_spacing import VoxelSpacing
 
-class ScacingResampler:
+class SpacingResampler:
 
     """
     Resamples a 3-D MRI volume from its current physical
@@ -19,7 +19,7 @@ class ScacingResampler:
 
     """
 
-    def resample(slef, volume: DicomVolume, current_spacing: VoxelSpacing, target_spacing: VoxelSpacing) -> DicomVolume:
+    def resample(self, volume: DicomVolume, current_spacing: VoxelSpacing, target_spacing: VoxelSpacing) -> DicomVolume:
 
         if not isinstance(volume, DicomVolume):
             raise TypeError("Expected DICOM volume instance")
@@ -36,6 +36,10 @@ class ScacingResampler:
         current = np.array(current_spacing.as_tuple, dtype=float)
 
         target = np.array(target_spacing.as_tuple, dtype=float)     
+
+        print("DEBUG current_spacing:", current_spacing)
+        print("DEBUG current:", current)
+        print("DEBUG target:", target)
 
         if np.any(current <= 0):
             raise ValueError("Current voxel spacing values must be greater tha zero")

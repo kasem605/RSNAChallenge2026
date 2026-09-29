@@ -1,11 +1,11 @@
-from ish_knee.preprocessing.volume.presprocessing_config import ProcessingConfig
+from ish_knee.preprocessing.volume.preprocessing_config import PreprocessingConfig
 from ish_knee.preprocessing.volume.voxel_spacing import VoxelSpacing
 
 def main():
 
     print()
     print("=" * 70)
-    print("PRESPROCESSING CONFIG TEST")
+    print("PREPROCESSING CONFIG TEST")
     print("=" * 70)
 
     # --------------------------------------------------------------
@@ -15,14 +15,14 @@ def main():
     spacing = VoxelSpacing(
         spacing_axis_0=1.0,
         spacing_axis_1=1.0,
-        spacing_axis_2=1.0,
+        spacing_axis_2=1.0
     )
 
     # --------------------------------------------------------------
     # Create configuration
     # --------------------------------------------------------------
 
-    config = ProcessingConfig(
+    config = PreprocessingConfig(
         target_spacing=spacing,
         target_shape=(64, 256, 256)
     )
@@ -72,7 +72,7 @@ def main():
     # --------------------------------------------------------------
 
     try:
-        ProcessingConfig(
+        PreprocessingConfig(
             target_spacing=spacing,
             target_shape=(64, 256)
         )
@@ -89,7 +89,7 @@ def main():
     # --------------------------------------------------------------
 
     try:
-        ProcessingConfig(
+        PreprocessingConfig(
             target_spacing=spacing,
             target_shape=(64, 0, 256)
         )
@@ -104,9 +104,8 @@ def main():
     # Verify negative dimension
     # --------------------------------------------------------------
 
-
     try:
-        ProcessingConfig(
+        PreprocessingConfig(
             target_spacing=spacing,
             target_shape=(64, -256, 256)
         )
@@ -142,7 +141,7 @@ def main():
 
     print()
     print("=" * 70)
-    print("PRESPROCESSING CONFIG TEST PASSED")
+    print("PREPROCESSING CONFIG TEST PASSED")
     print("=" * 70)    
 
 if __name__ == "__main__":

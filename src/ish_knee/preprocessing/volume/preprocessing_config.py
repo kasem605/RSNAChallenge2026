@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from .voxel_spacing import VoxelSpacing
 
 @dataclass(frozen=True)
-class ProcessingConfig:
+class PreprocessingConfig:
 
     """
     Defines the configuration used b y the MRI
