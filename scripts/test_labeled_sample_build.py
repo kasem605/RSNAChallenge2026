@@ -25,6 +25,7 @@ metadata = MetadataReader(paths)
 series_selector = SeriesSelector(train_series_dir=paths.train_series_dir)
 
 train = metadata.train
+
 labeled = train[train[LABEL_COLUMNS].notna().all(axis=1)]
 
 print("=" * 70)
