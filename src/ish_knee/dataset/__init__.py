@@ -3,6 +3,7 @@ from .knee_labels import KneeLabels
 from .dataset_split import DatasetSplit
 from .dataset_splitter import DatasetSplitter
 from .knee_mri_sample import KneeMRISample
+from .knee_mri_processor import KneeMRIProcessor
 
 __all__ = [ 
     "KneeStudySample",
@@ -13,5 +14,6 @@ __all__ = [
     "DatasetSampleValidator",
     "DatasetSplit",
     "DatasetSplitter",
-    "KneeMRISample"
+    "KneeMRISample",
+    "KneeMRIProcessor"
     ]

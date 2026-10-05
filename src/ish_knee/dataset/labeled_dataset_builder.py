@@ -8,10 +8,25 @@ class LabeledDatasetBuilder:
     complete abnormality labels.
     """
 
+    LABELED_COLUMNS = [
+            "ACL",
+            "MCL",
+            "Medial Meniscus",
+            "Lateral Meniscus",
+            "Medial OA",
+            "Lateral OA",
+            "PF OA",
+            "Effusion",
+            "Synovitis",
+            "Baker's",
+            "Contusion",
+            "Fracture"
+        ]
+    
     def __init__(self, sample_builder: DatasetSampleBuilder)->None:
 
         if not isinstance(sample_builder, DatasetSampleBuilder):
-            raise TypeError("Sample builder must be a DataSampleBuilder instance")
+            raise TypeError("Sample builder must be a DatasetSampleBuilder instance")
 
         self._sample_builder = sample_builder
 
@@ -31,5 +46,21 @@ class LabeledDatasetBuilder:
 
         return samples
 
-    
+    def build_first(self) -> DatasetSample:
+
+        """
+        Builds the first study that contains complete labels
+        """
+
+        metadata = self._sample_builder._metadata
+        train = metadata.train
+
+        labeled_rows = train[train[list(self.LABELED_COLUMNS)].notna().all(axis=1)]
+
+        if labeled_rows.empty:
+            raise ValueError("No fully labeled studies were found")
+
+        study_instance_uid = labeled_rows.iloc[0]["StudyInstanceUID"]
+
+        return self._sample_builder.build(study_instance_uid)
 

@@ -7,7 +7,7 @@ from .knee_labels import KneeLabels
 class DatasetSample:
 
     """
-    Represents one complete traiining sample.
+    Represents one complete training sample.
 
     contains:
         - MRI study information
