@@ -17,13 +17,13 @@ class KneeDataset:
 
         for sample in samples:
             if not isinstance(sample, DatasetSample):
-                raise TypeError("All samples must be aDatasetSample objects")
+                raise TypeError("All samples must be DatasetSample objects")
 
         if not isinstance(mri_processor, KneeMRIProcessor):
             raise TypeError("mri_processor must be a KneeMRIProcessor")
 
         if len(samples) == 0:
-            raise ValueError("Atleast one dataset sample is required.")
+            raise ValueError("At least one dataset sample is required.")
 
         self._samples = tuple(samples)
 
@@ -40,7 +40,7 @@ class KneeDataset:
         """
 
         if not isinstance(index, int):
-            raise TypeError(index must be an integer)
+            raise IndexError("index must be an integer")
 
         if index < 0 or index >= len(self._samples):
             raise ValueError(f"Dataset index out of range: {index}")
@@ -55,7 +55,7 @@ class KneeDataset:
 
         sample = self.get_sample(index)
 
-        return self._mri_processor(sample)
+        return self._mri_processor.process(sample)
 
     def get_study_uid(self, index: int) -> str:
 

@@ -22,6 +22,25 @@ class KneeMRISample:
     coronal: np.ndarray
     axial: np.ndarray
 
+    def __post_init__(self) -> None:
+
+        if not self.study_instance_uid:
+            raise ValueError("study_instance_uid cannot be empty")
+
+        volumes = (
+            ("sagittal", self.sagittal),
+            ("coronal", self.coronal),
+            ("axial", self.axial),
+        )
+
+        for name, volume in volumes:
+
+            if not isinstance(volume, np.ndarray):
+                raise TypeError(f"{name} volume must be a Numpy array")
+
+            if volume.ndim != 3:
+                raise ValueError(f"{name} volume must be 3-dimensional")
+
     @property
     def sagittal_shape(self) -> tuple[int, ...]:
         return self.sagittal.shape
