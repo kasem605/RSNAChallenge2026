@@ -42,8 +42,9 @@ class ModelDataset:
 
         return self._samples[index]
 
-    def get_modal_sample(self, index: int) -> ModelSample:
+    def get_model_sample(self, index: int) -> ModelSample:
         sample = self.get_sample(index)
+        return self._sample_builder.build(sample)
 
         return self._sample_builder(index)
 
