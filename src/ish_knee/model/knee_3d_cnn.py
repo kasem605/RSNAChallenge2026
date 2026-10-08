@@ -34,80 +34,80 @@ class Knee3DCNN(nn.Module):
         # -----------------------------------------------------------------
 
         self.classifier = nn.Sequential(
-            nn.linear(24,32),
+            nn.Linear(24,32),
             nn.ReLU(),
             nn.Linear(32, self.NUM_TARGETS)
         )
 
-        @staticmethod
-        def _create_branch() -> nn.Sequential:
-            return nn.Sequential(
-                nn.Conv3d(
-                    in_channels=1,
-                    out_channels=4,
-                    kernel_size=3,
-                    padding=1
-                ),
-                nn.ReLU(),
-                nn.MaxPool3d(kernel_size=2),
-                nn.Conv3d(
-                    in_channels=4,
-                    out_channels=8,
-                    kernel_size=3,
-                    padding=1
-                ),
-                nn.ReLU(),
-                nn.MaxPool3d(kernel_size=2),
+    @staticmethod
+    def _create_branch() -> nn.Sequential:
+        return nn.Sequential(
+            nn.Conv3d(
+                in_channels=1,
+                out_channels=4,
+                kernel_size=3,
+                padding=1
+            ),
+            nn.ReLU(),
+            nn.MaxPool3d(kernel_size=2),
+            nn.Conv3d(
+                in_channels=4,
+                out_channels=8,
+                kernel_size=3,
+                padding=1
+            ),
+            nn.ReLU(),
+            nn.MaxPool3d(kernel_size=2),
 
-                nn.AdaptiveAvgPool1d(output_size=1),
-                nn.Flatten(start_dim=1)
-            )
+            nn.AdaptiveAvgPool3d(output_size=1),
+            nn.Flatten(start_dim=1)
+        )
 
-        def forward(
-                self,
-                sagittal: torch.Tensor,
-                coronal: torch.Tensor,
-                axial: torch.Tensor            
-        ) -> torch.Tensor:
+    def forward(
+            self,
+            sagittal: torch.Tensor,
+            coronal: torch.Tensor,
+            axial: torch.Tensor            
+    ) -> torch.Tensor:
 
-            volumes = (
-                ("sagittal", sagittal),
-                ("coronal", coronal),
-                ("axial", axial)
-            )
+        volumes = (
+            ("sagittal", sagittal),
+            ("coronal", coronal),
+            ("axial", axial)
+        )
 
-            batch_size = sagittal.shape[0]
+        batch_size = sagittal.shape[0]
 
-            for name, volume in volumes:
-                if volume.ndim != 4:
-                    raise ValueError(f"{name} must have shape (batch, depth, height, width)")
+        for name, volume in volumes:
+            if volume.ndim != 4:
+                raise ValueError(f"{name} must have shape (batch, depth, height, width)")
 
-                if volume.shape[0] != batch_size:
-                    raise ValueError("All three MRI planes must have the same batch size")
+            if volume.shape[0] != batch_size:
+                raise ValueError("All three MRI planes must have the same batch size")
 
-            # ----------------------------------------------------------------------------
-            # Conv3d expects (batch, channels, depth, height, width)
-            # ----------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------
+        # Conv3d expects (batch, channels, depth, height, width)
+        # ----------------------------------------------------------------------------
 
-            sagittal = sagittal.unsqueeze(1)
-            coronal = coronal.unsqueeze(1) 
-            axial = axial.unsqueeze(1)                  
+        sagittal = sagittal.unsqueeze(1)
+        coronal = coronal.unsqueeze(1) 
+        axial = axial.unsqueeze(1)                  
 
-            sagittal_features = self.sagittal_branch(sagittal)
-            coronal_features = self.coronal_branch(coronal)
-            axial_features = self.axial_branch(axial)
+        sagittal_features = self.sagittal_branch(sagittal)
+        coronal_features = self.coronal_branch(coronal)
+        axial_features = self.axial_branch(axial)
 
-            combined_features = torch.cat(
-                (
-                    sagittal_features,
-                    combined_features,
-                    axial_features
-                ),
-                dim=1
-            )
+        combined_features = torch.cat(
+            (
+                sagittal_features,
+                coronal_features,
+                axial_features
+            ),
+            dim=1
+        )
 
-            # ----------------------------------------------------------------------------
-            # Return raw logits, not probabilities
-            # ----------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------
+        # Return raw logits, not probabilities
+        # ----------------------------------------------------------------------------
 
-            return self.classifier(combined_features)
+        return self.classifier(combined_features)
