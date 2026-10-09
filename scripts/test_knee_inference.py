@@ -27,7 +27,7 @@ def main():
 
     # Load the checkpoint
     # weights only=False is used because this checkpoint also contains
-    # optimizer stae, metadata, and study UID lists
+    # optimizer state, metadata, and study UID lists
     checkpoint = torch.load(
         checkpoint_path,
         map_location=device,
@@ -35,7 +35,7 @@ def main():
     )
 
     model.load_state_dict(checkpoint["model_state_dict"])
-    model.eval
+    model.eval()
 
     print(f"Checkpoint loaded: {checkpoint_path.resolve()}")
     print(f"Checkpoint epoch:        {checkpoint['epoch']}")
@@ -44,9 +44,9 @@ def main():
     # synthetic input verifies model loading and forward inference
     # Each input represents one preprocessed 
 
-    sagittal = torch.rand(1, 1, 64, 64, 64, device=device)
-    coronal = torch.rand(1, 1, 64, 64, 64, device=device)
-    axial = torch.rand(1, 1, 64, 64, 64, device=device)
+    sagittal = torch.rand(1, 64, 64, 64, device=device)
+    coronal = torch.rand(1, 64, 64, 64, device=device)
+    axial = torch.rand(1, 64, 64, 64, device=device)
 
     with torch.no_grad():
         logits = model(sagittal, coronal, axial)
@@ -56,7 +56,10 @@ def main():
         raise RuntimeError(f"Extected prediction shape (1, 12) has {tuple(probabilities.shape)}")
 
     if not torch.isfinite(probabilities).all():
-        raise RuntimeError("Prediction probabilities are outside [0.1]")
+        raise RuntimeError("Predictions contain NaM or infinity")
+
+    if ((probabilities < 0) | (probabilities > 1)).any():
+        raise RuntimeError("Prediction probabilities are outside [0, 1]")
 
     label_names = checkpoint["label_names"]
 
