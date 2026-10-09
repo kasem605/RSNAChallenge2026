@@ -14,12 +14,12 @@ from ish_knee.preprocessing.volume.preprocessing_config import PreprocessingConf
 from ish_knee.preprocessing.volume.voxel_spacing import VoxelSpacing
 from ish_knee.preprocessing.volume.volume_preprocessor import VolumePreprocessor
 
-
+from ish_knee.model.knee_3d_cnn import Knee3DCNN
 
 from ish_knee.model.model_sample_builder import ModelSampleBuilder
 from ish_knee.model.model_dataset import ModelDataset
 from ish_knee.model.pytorch_knee_dataset import PyTorchKneeDataset
-from ish_knee.model.model_data_loader import MOdelDataLoader
+from ish_knee.model.model_data_loader import ModelDataLoader
 
 def main():
 
@@ -50,6 +50,52 @@ def main():
     assert len(samples) == 58
     print("Labeled studies:", len(samples))
 
+    
+    # ----------------------------------------------------------
+    # Audit label distribution across fully labeled studies
+    # ----------------------------------------------------------
+    import numpy as np
+
+    label_names = [
+        "ACL",
+        "MCL",
+        "Medial Meniscus",
+        "Lateral Meniscus",
+        "Medial OA",
+        "Lateral OA",
+        "PF OA",
+        "Effusion",
+        "Synovitis",
+        "Baker's",
+        "Contusion",
+        "Fracture",
+    ]
+
+    label_matrix = np.asarray(
+        [sample.labels.as_tuple for sample in samples],
+        dtype=np.int32,
+    )
+
+    assert label_matrix.shape == (len(samples), len(label_names))
+    assert np.isin(label_matrix, [0, 1]).all()
+
+    print()
+    print("LABEL DISTRIBUTION — FULLY LABELED STUDIES")
+    print("-" * 65)
+
+    for index, name in enumerate(label_names):
+        positive = int(label_matrix[:, index].sum())
+        negative = len(samples) - positive
+
+        print(
+            f"{name:20s} "
+            f"Positive: {positive:2d}  "
+            f"Negative: {negative:2d}"
+        )
+
+    print("-" * 65)
+    print("Label distribution audit PASSED")
+
     # ----------------------------------------------------------
     # MRI preprocessing
     # ----------------------------------------------------------    
@@ -74,7 +120,7 @@ def main():
     # Create the Dataloader
     # ----------------------------------------------------------
 
-    loader_factory = MOdelDataLoader(
+    loader_factory = ModelDataLoader(
         dataset=torch_dataset,
         batch_size=1,
         shuffle=False,
@@ -102,15 +148,62 @@ def main():
     assert tuple(axial.shape) == (1, 64, 64, 64)
     assert tuple(target.shape) == (1, 12)
 
+    # ----------------------------------------------------------
+    # Validate real MRI tensor values
+    # ----------------------------------------------------------
+    for name, volume in [
+        ("Sagittal", sagittal),
+        ("Coronal", coronal),
+        ("Axial", axial),
+    ]:
+        assert torch.isfinite(volume).all().item(), (
+            f"{name} volume contains NaN or infinity"
+        )
+
+        print(f"{name} min:", volume.min().item())
+        print(f"{name} max:", volume.max().item())
+        print(f"{name} mean:", volume.mean().item())
+        print(f"{name} std:", volume.std().item())
+
+        assert volume.std().item() > 0, (
+            f"{name} volume is constant"
+        )
+
+    assert torch.isfinite(target).all().item()
+    assert torch.all((target == 0) | (target == 1)).item()
+
+    print("MRI tensor and label value checks PASSED")
     print()
     print("Sagittal batch shape:", tuple(sagittal.shape))
     print("Coronal batch shape:", tuple(coronal.shape))
     print("Axial batch shape:", tuple(axial.shape))
     print("Target batch shape:", tuple(target.shape))
-    print("Tension dtype::", sagittal.dtype)
+    
+    print("Tensor dtype:", sagittal.dtype)
+
+    # ----------------------------------------------------------
+    # Run the real MRI batch through the 3D CNN
+    # ----------------------------------------------------------
+    print()
+    print("Testing Knee3DCNN with real MRI data...")
+
+    model = Knee3DCNN()
+    model.eval()
+
+    with torch.no_grad():
+        logits = model(sagittal, coronal, axial)
+
+    assert isinstance(logits, torch.Tensor)
+    assert tuple(logits.shape) == (1, 12)
+    assert torch.isfinite(logits).all().item()
+
+    print("Model output shape:", tuple(logits.shape))
+    print("Model output dtype:", logits.dtype)
+    print("All model outputs finite:", torch.isfinite(logits).all().item())
 
     print()
     print("MODEL DATA LOADER INTEGRATION TEST PASSED")
+    print("REAL MRI CNN FORWARD-PASS TEST PASSED")
     print("=" * 70)
 
 if __name__ == "__main__":

@@ -23,11 +23,11 @@ class TrainingConfig:
             raise ValueError("learning_rate must be greater than 0")
 
         if self.epochs < 1:
-            raise ValueError("num_workers cannot be negative.")
+            raise ValueError("epochs must be at least 1")
 
         if self.num_workers < 0:
             raise ValueError("num_workers cannot be negative.")
 
         if not isinstance(self.checkpoint_dir, Path):
-            raise TypeError("checkpoint_dir must be a Pathl;[]")
+            raise TypeError("checkpoint_dir must be a Pathl instance")
 

@@ -79,17 +79,13 @@ class VolumePreprocessor:
         current_shape = processed_volume.volume.shape
         target_shape = self._config.target_shape
 
-        if current_shape != target_shape:
-            # Resize only when the current volume is larger
-            # or similar than the desired target
-            resize_shape = tuple(
-                min(current, target)
-                for current, target
-                in zip(
-                    current_shape,
-                    target_shape
-                )
+        resize_shape = tuple(
+            min(current, target)
+            for current, target in zip(
+                current_shape,
+                target_shape
             )
+        )
 
         if resize_shape != current_shape:
 

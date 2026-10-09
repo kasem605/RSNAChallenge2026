@@ -1,7 +1,7 @@
 from torch.utils.data import DataLoader
 from .pytorch_knee_dataset import PyTorchKneeDataset
 
-class MOdelDataLoader:
+class ModelDataLoader:
 
     """
     CReates Mytorch Dataloaders for knee MRI training
