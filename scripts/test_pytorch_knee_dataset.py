@@ -115,6 +115,22 @@ def main():
         print("Tensor dtype:", sagittal.dtype)
         print("Target values:", target.tolist())
 
+        # ----------------------------------------------------------
+        # Inspect MRI tensor intensity and variation
+        # ----------------------------------------------------------
+
+        for name, tensor in [
+            ("Sagittal", sagittal),
+            ("Coronal", coronal),
+            ("Axial", axial),
+        ]:
+            print(f"\n{name} statistics:")
+            print("  Min:", tensor.min().item())
+            print("  Max:", tensor.max().item())
+            print("  Mean:", tensor.mean().item())
+            print("  Std:", tensor.std().item())
+            print("  Zero fraction:", (tensor == 0).float().mean().item())
+
         print()
         print("PYTORCH KNEE DATASET TEST PASSED")
         print("=" * 70)

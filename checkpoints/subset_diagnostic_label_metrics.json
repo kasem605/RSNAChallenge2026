@@ -1,0 +1,398 @@
+{
+  "checkpoint": "C:\\working_dir\\RSNA Challenge 2026\\Knee_Challenge_2026\\ish_knee_ai\\checkpoints\\knee_3d_cnn_subset_diagnostic.pt",
+  "study_uids": [
+    "1.2.826.0.1.3680043.8.498.22109739962224309418874538994436903404",
+    "1.2.826.0.1.3680043.8.498.73926443729786165628848843707532839995",
+    "1.2.826.0.1.3680043.8.498.11382021393803389951964005983002209238",
+    "1.2.826.0.1.3680043.8.498.37040910196459054543310335064167212742"
+  ],
+  "threshold": 0.5,
+  "label_metrics": [
+    {
+      "label": "ACL",
+      "actual_positive": 2,
+      "actual_negative": 2,
+      "predicted_positive": 0,
+      "true_positive": 0,
+      "false_positive": 0,
+      "false_negative": 2,
+      "true_negative": 2,
+      "f1": 0.0,
+      "probabilities": [
+        0.41894564032554626,
+        0.42564722895622253,
+        0.4233967363834381,
+        0.41277337074279785
+      ]
+    },
+    {
+      "label": "MCL",
+      "actual_positive": 0,
+      "actual_negative": 4,
+      "predicted_positive": 0,
+      "true_positive": 0,
+      "false_positive": 0,
+      "false_negative": 0,
+      "true_negative": 4,
+      "f1": 0.0,
+      "probabilities": [
+        0.08905932307243347,
+        0.04915536567568779,
+        0.07938411086797714,
+        0.04232628270983696
+      ]
+    },
+    {
+      "label": "Medial Meniscus",
+      "actual_positive": 3,
+      "actual_negative": 1,
+      "predicted_positive": 4,
+      "true_positive": 3,
+      "false_positive": 1,
+      "false_negative": 0,
+      "true_negative": 0,
+      "f1": 0.8571428571428571,
+      "probabilities": [
+        0.7109214067459106,
+        0.76540207862854,
+        0.7212420701980591,
+        0.775492787361145
+      ]
+    },
+    {
+      "label": "Lateral Meniscus",
+      "actual_positive": 2,
+      "actual_negative": 2,
+      "predicted_positive": 4,
+      "true_positive": 2,
+      "false_positive": 2,
+      "false_negative": 0,
+      "true_negative": 0,
+      "f1": 0.6666666666666666,
+      "probabilities": [
+        0.5480362772941589,
+        0.5484331250190735,
+        0.5451018810272217,
+        0.5599823594093323
+      ]
+    },
+    {
+      "label": "Medial OA",
+      "actual_positive": 1,
+      "actual_negative": 3,
+      "predicted_positive": 0,
+      "true_positive": 0,
+      "false_positive": 0,
+      "false_negative": 1,
+      "true_negative": 3,
+      "f1": 0.0,
+      "probabilities": [
+        0.20694062113761902,
+        0.12743768095970154,
+        0.18733857572078705,
+        0.12149453908205032
+      ]
+    },
+    {
+      "label": "Lateral OA",
+      "actual_positive": 1,
+      "actual_negative": 3,
+      "predicted_positive": 0,
+      "true_positive": 0,
+      "false_positive": 0,
+      "false_negative": 1,
+      "true_negative": 3,
+      "f1": 0.0,
+      "probabilities": [
+        0.25388452410697937,
+        0.1908569186925888,
+        0.2411174178123474,
+        0.18370336294174194
+      ]
+    },
+    {
+      "label": "PF OA",
+      "actual_positive": 1,
+      "actual_negative": 3,
+      "predicted_positive": 0,
+      "true_positive": 0,
+      "false_positive": 0,
+      "false_negative": 1,
+      "true_negative": 3,
+      "f1": 0.0,
+      "probabilities": [
+        0.2904806137084961,
+        0.2270483374595642,
+        0.27507802844047546,
+        0.21902258694171906
+      ]
+    },
+    {
+      "label": "Effusion",
+      "actual_positive": 2,
+      "actual_negative": 2,
+      "predicted_positive": 4,
+      "true_positive": 2,
+      "false_positive": 2,
+      "false_negative": 0,
+      "true_negative": 0,
+      "f1": 0.6666666666666666,
+      "probabilities": [
+        0.5559253692626953,
+        0.5740543603897095,
+        0.561831533908844,
+        0.5702396631240845
+      ]
+    },
+    {
+      "label": "Synovitis",
+      "actual_positive": 2,
+      "actual_negative": 2,
+      "predicted_positive": 4,
+      "true_positive": 2,
+      "false_positive": 2,
+      "false_negative": 0,
+      "true_negative": 0,
+      "f1": 0.6666666666666666,
+      "probabilities": [
+        0.5596838593482971,
+        0.5887715220451355,
+        0.5690030455589294,
+        0.5855854153633118
+      ]
+    },
+    {
+      "label": "Baker's",
+      "actual_positive": 1,
+      "actual_negative": 3,
+      "predicted_positive": 0,
+      "true_positive": 0,
+      "false_positive": 0,
+      "false_negative": 1,
+      "true_negative": 3,
+      "f1": 0.0,
+      "probabilities": [
+        0.3040366470813751,
+        0.25092005729675293,
+        0.2943568527698517,
+        0.24023982882499695
+      ]
+    },
+    {
+      "label": "Contusion",
+      "actual_positive": 1,
+      "actual_negative": 3,
+      "predicted_positive": 0,
+      "true_positive": 0,
+      "false_positive": 0,
+      "false_negative": 1,
+      "true_negative": 3,
+      "f1": 0.0,
+      "probabilities": [
+        0.2423529177904129,
+        0.18731288611888885,
+        0.22800388932228088,
+        0.18078219890594482
+      ]
+    },
+    {
+      "label": "Fracture",
+      "actual_positive": 1,
+      "actual_negative": 3,
+      "predicted_positive": 0,
+      "true_positive": 0,
+      "false_positive": 0,
+      "false_negative": 1,
+      "true_negative": 3,
+      "f1": 0.0,
+      "probabilities": [
+        0.3013373911380768,
+        0.24882780015468597,
+        0.2890530824661255,
+        0.23988483846187592
+      ]
+    }
+  ],
+  "study_predictions": [
+    {
+      "study_uid": "1.2.826.0.1.3680043.8.498.22109739962224309418874538994436903404",
+      "actual": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "predicted": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "probabilities": [
+        0.41894564032554626,
+        0.08905932307243347,
+        0.7109214067459106,
+        0.5480362772941589,
+        0.20694062113761902,
+        0.25388452410697937,
+        0.2904806137084961,
+        0.5559253692626953,
+        0.5596838593482971,
+        0.3040366470813751,
+        0.2423529177904129,
+        0.3013373911380768
+      ]
+    },
+    {
+      "study_uid": "1.2.826.0.1.3680043.8.498.73926443729786165628848843707532839995",
+      "actual": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "predicted": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "probabilities": [
+        0.42564722895622253,
+        0.04915536567568779,
+        0.76540207862854,
+        0.5484331250190735,
+        0.12743768095970154,
+        0.1908569186925888,
+        0.2270483374595642,
+        0.5740543603897095,
+        0.5887715220451355,
+        0.25092005729675293,
+        0.18731288611888885,
+        0.24882780015468597
+      ]
+    },
+    {
+      "study_uid": "1.2.826.0.1.3680043.8.498.11382021393803389951964005983002209238",
+      "actual": [
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "predicted": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "probabilities": [
+        0.4233967363834381,
+        0.07938411086797714,
+        0.7212420701980591,
+        0.5451018810272217,
+        0.18733857572078705,
+        0.2411174178123474,
+        0.27507802844047546,
+        0.561831533908844,
+        0.5690030455589294,
+        0.2943568527698517,
+        0.22800388932228088,
+        0.2890530824661255
+      ]
+    },
+    {
+      "study_uid": "1.2.826.0.1.3680043.8.498.37040910196459054543310335064167212742",
+      "actual": [
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1
+      ],
+      "predicted": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "probabilities": [
+        0.41277337074279785,
+        0.04232628270983696,
+        0.775492787361145,
+        0.5599823594093323,
+        0.12149453908205032,
+        0.18370336294174194,
+        0.21902258694171906,
+        0.5702396631240845,
+        0.5855854153633118,
+        0.24023982882499695,
+        0.18078219890594482,
+        0.23988483846187592
+      ]
+    }
+  ]
+}

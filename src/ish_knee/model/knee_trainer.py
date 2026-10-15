@@ -6,17 +6,19 @@ from torch.utils.data import DataLoader
 from .knee_3d_cnn import Knee3DCNN
 from .training_config import TrainingConfig
 
-class KneeTrainer:
 
+class KneeTrainer:
     """
-    Trains the KNee3DCNN model using fully labeled MRI studies.
+    Trains the Knee3DCNN model using fully labeled MRI studies.
+    Supports optional per-label positive-class weights.
     """
 
     def __init__(
-            self,
-            model: Knee3DCNN,
-            config: TrainingConfig,
-            device: torch.device | None = None
+        self,
+        model: Knee3DCNN,
+        config: TrainingConfig,
+        device: torch.device | None = None,
+        positive_weights: list[float] | None = None,
     ) -> None:
 
         if not isinstance(model, Knee3DCNN):
@@ -26,7 +28,6 @@ class KneeTrainer:
             raise TypeError("config must be a TrainingConfig instance")
 
         self.model = model
-
         self.config = config
 
         self.device = device or torch.device(
@@ -35,12 +36,38 @@ class KneeTrainer:
 
         self.model.to(self.device)
 
-        self.criterion = nn.BCEWithLogitsLoss()
+        if positive_weights is None:
+            pos_weight = None
+        else:
+            if len(positive_weights) != 12:
+                raise ValueError(
+                    "positive_weights must contain exactly 12 values."
+                )
 
-        self.optimizer = Adam(self.model.parameters(), lr=self.config.learning_rate)
+            if any(
+                not isinstance(weight, (int, float))
+                or weight <= 0
+                or not torch.isfinite(torch.tensor(float(weight))).item()
+                for weight in positive_weights
+            ):
+                raise ValueError(
+                    "All positive weights must be finite positive numbers."
+                )
+
+            pos_weight = torch.tensor(
+                positive_weights,
+                dtype=torch.float32,
+                device=self.device,
+            )
+
+        self.criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
+
+        self.optimizer = Adam(
+            self.model.parameters(),
+            lr=self.config.learning_rate,
+        )
 
     def train_epoch(self, loader: DataLoader) -> float:
-
         """
         Train for one epoch and return the average batch loss.
         """
@@ -48,7 +75,6 @@ class KneeTrainer:
         self.model.train()
 
         total_loss = 0.0
-
         batch_count = 0
 
         for sagittal, coronal, axial, targets in loader:
@@ -69,9 +95,8 @@ class KneeTrainer:
             batch_count += 1
 
         if batch_count == 0:
-            raise ValueError("The training Dataloader contains no batches")
+            raise ValueError(
+                "The training DataLoader contains no batches."
+            )
 
         return total_loss / batch_count
-             
-
-         

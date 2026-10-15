@@ -15,6 +15,8 @@ Workflow:
 # Run from the project root:
 #    python -u .\scripts\train_knee_baseline.py
 
+import random
+import numpy as np
 
 import json
 from datetime import datetime, timezone
@@ -52,6 +54,15 @@ from ish_knee.model.model_data_loader import ModelDataLoader
 from ish_knee.model.knee_trainer import KneeTrainer
 from ish_knee.model.training_config import TrainingConfig
 
+# ============================================================
+# Set random seeds
+# ============================================================
+
+def set_random_seeds(seed: int) -> None:
+    """Make model initialization and training shuffling reproducible."""
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
 
 # ============================================================
 # Configuration
@@ -74,7 +85,7 @@ LABEL_NAMES = [
     "Fracture",
 ]
 
-VALIDATION_FRACTION = 0.20
+VALIDATION_FRACTION = 0.30
 RANDOM_SEED = 42
 
 TARGET_SPACING = VoxelSpacing(
@@ -91,7 +102,9 @@ BATCH_SIZE = 1
 LEARNING_RATE = 0.001
 NUM_WORKERS = 0
 
-CHECKPOINT_DIR = Path("checkpoints")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+CHECKPOINT_DIR = PROJECT_ROOT / "checkpoints"
+CHECKPOINT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # ============================================================
@@ -262,6 +275,9 @@ def save_json_results(results, output_path):
 # ============================================================
 
 def main():
+    
+    set_random_seeds(RANDOM_SEED)
+
     print("=" * 80)
     print("RSNA KNEE AI - BASELINE TRAINING")
     print("=" * 80)
@@ -533,7 +549,7 @@ def main():
         "checkpoint_path": str(checkpoint_path.resolve()),
     }
 
-    results_path = CHECKPOINT_DIR / "training_results.json"
+    results_path = CHECKPOINT_DIR / "baseline_training_results.json"
     save_json_results(results, results_path)
 
     print("\n" + "=" * 80)

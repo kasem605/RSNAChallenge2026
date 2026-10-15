@@ -40,7 +40,7 @@ class KneeMRIProcessor:
         self._spacing_analyzer = SpacingAnalyzer()
         self._preprocessor = preprocessor
 
-    def process(self, sample: DatasetSample)-> KneeMRIProcessor:
+    def process(self, sample: DatasetSample)-> KneeMRISample:
 
         if not isinstance(sample, DatasetSample):
             raise TypeError("sample must be a DatasetSample instance")

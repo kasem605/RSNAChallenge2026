@@ -22,7 +22,7 @@ class ModelSampleBuilder:
     def __init__(self, mri_processor: KneeMRIProcessor) -> None:
 
         if not isinstance(mri_processor, KneeMRIProcessor):
-            raise "mri_processor must be a KneeMRIProcessor instance"
+            raise TypeError("mri_processor must be a KneeMRIProcessor instance")
 
         self._mri_processor = mri_processor
 
