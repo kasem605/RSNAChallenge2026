@@ -369,6 +369,17 @@ def main():
         10.0,
     ).tolist()
 
+    print("\nClass-weight diagnostics")
+    print("-" * 75)
+
+    for i, label in enumerate(LABEL_NAMES):
+        print(
+            f"{label:20s} "
+            f"positive={int(positive_counts[i]):3d} "
+            f"negative={int(negative_counts[i]):3d} "
+            f"pos_weight={positive_weights[i]:.3f}"
+        )
+
     print("\nTraining-set class distribution and positive weights:")
     for label, positives, negatives, weight in zip(
         LABEL_NAMES,

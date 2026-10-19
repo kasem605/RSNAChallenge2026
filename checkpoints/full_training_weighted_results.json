@@ -1,5 +1,5 @@
 {
-    "run_timestamp_utc": "2026-10-14T23:12:57.893126+00:00",
+    "run_timestamp_utc": "2026-10-18T08:56:15.018866+00:00",
     "device": "cpu",
     "dataset_root": "D:\\RSNA knee abnormality detection 2026",
     "epochs": 20,
