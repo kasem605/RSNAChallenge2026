@@ -29,5 +29,5 @@ class TrainingConfig:
             raise ValueError("num_workers cannot be negative.")
 
         if not isinstance(self.checkpoint_dir, Path):
-            raise TypeError("checkpoint_dir must be a Pathl instance")
+            raise TypeError("checkpoint_dir must be a Path instance")
 

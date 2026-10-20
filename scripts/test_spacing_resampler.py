@@ -2,7 +2,7 @@ from pathlib import Path
 import numpy as np
 
 from ish_knee.preprocessing.dicom.dicom_volume import DicomVolume
-from ish_knee.preprocessing.volume.spacing_resampler import ScacingResampler
+from ish_knee.preprocessing.volume.spacing_resampler import SpacingResampler
 from ish_knee.preprocessing.volume.voxel_spacing import VoxelSpacing
 
 def main():
@@ -56,7 +56,7 @@ def main():
     # Resample
     # ----------------------------------------------------------------
 
-    resampler = ScacingResampler()
+    resampler = SpacingResampler()
 
     result = resampler.resample(
         volume=volume,

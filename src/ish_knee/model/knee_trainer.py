@@ -89,6 +89,15 @@ class KneeTrainer:
             loss = self.criterion(logits, targets)
 
             loss.backward()
+
+            # Detect invalid gradients before updating model parameters.
+            for name, parameter in self.model.named_parameters():
+                if parameter.grad is not None:
+                    if not torch.isfinite(parameter.grad).all():
+                        raise RuntimeError(
+                            f"Non-finite gradient detected in parameter: {name}"
+                        )
+
             self.optimizer.step()
 
             total_loss += loss.item()

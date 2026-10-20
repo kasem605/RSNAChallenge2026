@@ -65,14 +65,14 @@ class DatasetSampleBuilder:
         
         study_row = study_rows.iloc[0]
         
-        # missing_labels = [
-        #     column
-        #     for column in self.LABELED_COLUMNS
-        #     if pd.isna(study_row[column])
-        # ]
+        missing_labels = [
+            column
+            for column in self.LABELED_COLUMNS
+            if pd.isna(study_row[column])
+        ]
 
-        # if missing_labels:
-        #     raise ValueError(f"StudyInstanceUID has incomplete abnormality labels: {study_instance_uid}")
+        if missing_labels:
+            raise ValueError(f"StudyInstanceUID has incomplete abnormality labels: {study_instance_uid}")
         
         series_rows = self._metadata.get_study_series(study_instance_uid)
 

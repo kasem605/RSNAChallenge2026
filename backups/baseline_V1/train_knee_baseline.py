@@ -145,7 +145,7 @@ def main():
     # --------------------------------------------------
     preprocessing_config = PreprocessingConfig(
         target_spacing=VoxelSpacing(1.0, 1.0, 1.0),
-        target_shape=(64, 64, 64),
+        target_shape=(12, 128, 128),
     )
 
     preprocessor = VolumePreprocessor(preprocessing_config)

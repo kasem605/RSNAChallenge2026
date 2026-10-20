@@ -46,7 +46,5 @@ class ModelDataset:
         sample = self.get_sample(index)
         return self._sample_builder.build(sample)
 
-        return self._sample_builder(index)
-
     def get_study_uid(self, index: int) -> str:
         return self.get_sample(index).study_instance_uid

@@ -34,6 +34,13 @@ class VolumePadder:
             raise ValueError("Target shape must contain exactly 3-diumensions")
 
         if any(
+            not isinstance(dimension, (int, np.integer))
+            or isinstance(dimension, (bool, np.bool_))
+            for dimension in target_shape
+            ):
+            raise ValueError("Target dimensions must be integers")
+
+        if any(
             dimension <= 0
             for dimension in target_shape
             ):
@@ -73,6 +80,6 @@ class VolumePadder:
         return DicomVolume(
             study_instance_uid=volume.study_instance_uid,
             series_instance_uid=volume.series_instance_uid,
-            volume=padded_volume,
-            source_path=volume.source_path
+            volume=padding_volume,
+            source_path=volume.source_path,
         )

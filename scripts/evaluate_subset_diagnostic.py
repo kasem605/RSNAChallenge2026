@@ -103,7 +103,7 @@ def main():
     # Reuse the original preprocessing configuration.
     config = PreprocessingConfig(
         target_spacing=VoxelSpacing(1.0, 1.0, 1.0),
-        target_shape=(64, 64, 64),
+        target_shape=(128, 128, 128),
         normalize_intensity=True,
         padding_value=0.0,
     )

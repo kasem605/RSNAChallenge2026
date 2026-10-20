@@ -11,7 +11,7 @@ import pydicom
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_ROOT = Path(r"D:\RSNA knee abnormality detection 2026")
 OUTPUT_DIR = PROJECT_ROOT / "artifacts" / "mri_visual_check"
-TARGET_SHAPE = (64, 64, 64)
+TARGET_SHAPE = (128, 128, 128)
 TARGET_SPACING_VALUES = (1.0, 1.0, 1.0)
 BACKGROUND_THRESHOLD = 0.02
 

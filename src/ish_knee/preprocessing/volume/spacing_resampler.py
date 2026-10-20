@@ -35,7 +35,17 @@ class SpacingResampler:
 
         current = np.array(current_spacing.as_tuple, dtype=float)
 
-        target = np.array(target_spacing.as_tuple, dtype=float)     
+        target = np.array(target_spacing.as_tuple, dtype=float)   
+
+        if not np.isfinite(current).all() or np.any(current <= 0):
+            raise ValueError(
+                "Current voxel spacing values must be finite and greater than zero"
+            )
+
+        if not np.isfinite(target).all() or np.any(target <= 0):
+            raise ValueError(
+                "Target voxel spacing values must be finite and greater than zero"
+            )  
 
         print("DEBUG current_spacing:", current_spacing)
         print("DEBUG current:", current)
