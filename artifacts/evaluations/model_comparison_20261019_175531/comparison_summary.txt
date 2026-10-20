@@ -1,0 +1,19 @@
+BASELINE VS WEIGHTED MODEL COMPARISON
+======================================================================
+Baseline predictions: C:\working_dir\RSNA Challenge 2026\Knee_Challenge_2026\ish_knee_ai\artifacts\evaluations\knee_eval_20261019_162011\validation_predictions.csv
+Weighted predictions: C:\working_dir\RSNA Challenge 2026\Knee_Challenge_2026\ish_knee_ai\artifacts\evaluations\knee_eval_20261019_174748\validation_predictions.csv
+Matched study-label rows: 204
+Unique validation studies: 17
+Labels: 12
+Classification threshold: 0.5
+
+Per-label metrics are saved in model_comparison.csv.
+Paired probabilities are saved in paired_probabilities.csv.
+
+ROC-AUC changes (weighted minus baseline):
+Labels with higher AUC: 6
+Labels with lower AUC: 5
+Labels with unchanged AUC: 1
+
+A positive AUC change indicates improved ranking on this validation set.
+It does not establish clinical usefulness or statistical significance.

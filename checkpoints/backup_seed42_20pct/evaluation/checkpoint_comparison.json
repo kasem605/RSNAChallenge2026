@@ -1,0 +1,286 @@
+{
+    "validation_study_count": 12,
+    "validation_study_uids": [
+        "1.2.826.0.1.3680043.8.498.67188121544063723837669983597453941774",
+        "1.2.826.0.1.3680043.8.498.26790702379506190936834447203448882465",
+        "1.2.826.0.1.3680043.8.498.82166943552764439138333504456139890254",
+        "1.2.826.0.1.3680043.8.498.12505035424093604269515328931488770819",
+        "1.2.826.0.1.3680043.8.498.13335129881737731410081002627729200903",
+        "1.2.826.0.1.3680043.8.498.18392509497170616983977319528036573378",
+        "1.2.826.0.1.3680043.8.498.86968600239724310678905311244945464037",
+        "1.2.826.0.1.3680043.8.498.94433753471890306108089557761231739312",
+        "1.2.826.0.1.3680043.8.498.47921753480592595198052407850568677187",
+        "1.2.826.0.1.3680043.8.498.17844546765907321649997094867791102711",
+        "1.2.826.0.1.3680043.8.498.11915937982684988073644209606907169581",
+        "1.2.826.0.1.3680043.8.498.72853333220043794904856138561095171921"
+    ],
+    "threshold": 0.5,
+    "target_spacing": [
+        1.0,
+        1.0,
+        1.0
+    ],
+    "target_shape": [
+        64,
+        64,
+        64
+    ],
+    "models": {
+        "baseline": {
+            "checkpoint": "C:\\working_dir\\RSNA Challenge 2026\\Knee_Challenge_2026\\ish_knee_ai\\checkpoints\\knee_3d_cnn_baseline_epoch_1.pt",
+            "checkpoint_epoch": 1,
+            "saved_validation_loss": 0.6723420868317286,
+            "recomputed_validation_loss": 0.6723420868317286,
+            "per_label_metrics": {
+                "ACL": {
+                    "true_positive": 0,
+                    "false_positive": 0,
+                    "false_negative": 8,
+                    "true_negative": 4,
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1_score": 0.0,
+                    "accuracy": 0.3333
+                },
+                "MCL": {
+                    "true_positive": 0,
+                    "false_positive": 0,
+                    "false_negative": 2,
+                    "true_negative": 10,
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1_score": 0.0,
+                    "accuracy": 0.8333
+                },
+                "Medial Meniscus": {
+                    "true_positive": 0,
+                    "false_positive": 0,
+                    "false_negative": 6,
+                    "true_negative": 6,
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1_score": 0.0,
+                    "accuracy": 0.5
+                },
+                "Lateral Meniscus": {
+                    "true_positive": 0,
+                    "false_positive": 0,
+                    "false_negative": 4,
+                    "true_negative": 8,
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1_score": 0.0,
+                    "accuracy": 0.6667
+                },
+                "Medial OA": {
+                    "true_positive": 0,
+                    "false_positive": 0,
+                    "false_negative": 2,
+                    "true_negative": 10,
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1_score": 0.0,
+                    "accuracy": 0.8333
+                },
+                "Lateral OA": {
+                    "true_positive": 0,
+                    "false_positive": 0,
+                    "false_negative": 2,
+                    "true_negative": 10,
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1_score": 0.0,
+                    "accuracy": 0.8333
+                },
+                "PF OA": {
+                    "true_positive": 2,
+                    "false_positive": 10,
+                    "false_negative": 0,
+                    "true_negative": 0,
+                    "precision": 0.1667,
+                    "recall": 1.0,
+                    "f1_score": 0.2857,
+                    "accuracy": 0.1667
+                },
+                "Effusion": {
+                    "true_positive": 9,
+                    "false_positive": 3,
+                    "false_negative": 0,
+                    "true_negative": 0,
+                    "precision": 0.75,
+                    "recall": 1.0,
+                    "f1_score": 0.8571,
+                    "accuracy": 0.75
+                },
+                "Synovitis": {
+                    "true_positive": 4,
+                    "false_positive": 8,
+                    "false_negative": 0,
+                    "true_negative": 0,
+                    "precision": 0.3333,
+                    "recall": 1.0,
+                    "f1_score": 0.5,
+                    "accuracy": 0.3333
+                },
+                "Baker's": {
+                    "true_positive": 0,
+                    "false_positive": 0,
+                    "false_negative": 3,
+                    "true_negative": 9,
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1_score": 0.0,
+                    "accuracy": 0.75
+                },
+                "Contusion": {
+                    "true_positive": 0,
+                    "false_positive": 0,
+                    "false_negative": 2,
+                    "true_negative": 10,
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1_score": 0.0,
+                    "accuracy": 0.8333
+                },
+                "Fracture": {
+                    "true_positive": 0,
+                    "false_positive": 0,
+                    "false_negative": 4,
+                    "true_negative": 8,
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1_score": 0.0,
+                    "accuracy": 0.6667
+                }
+            }
+        },
+        "weighted": {
+            "checkpoint": "C:\\working_dir\\RSNA Challenge 2026\\Knee_Challenge_2026\\ish_knee_ai\\checkpoints\\knee_3d_cnn_weighted_epoch_1.pt",
+            "checkpoint_epoch": 1,
+            "saved_validation_loss": 0.6969736715157827,
+            "recomputed_validation_loss": 0.6969736715157827,
+            "per_label_metrics": {
+                "ACL": {
+                    "true_positive": 0,
+                    "false_positive": 0,
+                    "false_negative": 8,
+                    "true_negative": 4,
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1_score": 0.0,
+                    "accuracy": 0.3333
+                },
+                "MCL": {
+                    "true_positive": 0,
+                    "false_positive": 0,
+                    "false_negative": 2,
+                    "true_negative": 10,
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1_score": 0.0,
+                    "accuracy": 0.8333
+                },
+                "Medial Meniscus": {
+                    "true_positive": 6,
+                    "false_positive": 6,
+                    "false_negative": 0,
+                    "true_negative": 0,
+                    "precision": 0.5,
+                    "recall": 1.0,
+                    "f1_score": 0.6667,
+                    "accuracy": 0.5
+                },
+                "Lateral Meniscus": {
+                    "true_positive": 0,
+                    "false_positive": 0,
+                    "false_negative": 4,
+                    "true_negative": 8,
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1_score": 0.0,
+                    "accuracy": 0.6667
+                },
+                "Medial OA": {
+                    "true_positive": 2,
+                    "false_positive": 10,
+                    "false_negative": 0,
+                    "true_negative": 0,
+                    "precision": 0.1667,
+                    "recall": 1.0,
+                    "f1_score": 0.2857,
+                    "accuracy": 0.1667
+                },
+                "Lateral OA": {
+                    "true_positive": 0,
+                    "false_positive": 0,
+                    "false_negative": 2,
+                    "true_negative": 10,
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1_score": 0.0,
+                    "accuracy": 0.8333
+                },
+                "PF OA": {
+                    "true_positive": 2,
+                    "false_positive": 10,
+                    "false_negative": 0,
+                    "true_negative": 0,
+                    "precision": 0.1667,
+                    "recall": 1.0,
+                    "f1_score": 0.2857,
+                    "accuracy": 0.1667
+                },
+                "Effusion": {
+                    "true_positive": 9,
+                    "false_positive": 3,
+                    "false_negative": 0,
+                    "true_negative": 0,
+                    "precision": 0.75,
+                    "recall": 1.0,
+                    "f1_score": 0.8571,
+                    "accuracy": 0.75
+                },
+                "Synovitis": {
+                    "true_positive": 0,
+                    "false_positive": 0,
+                    "false_negative": 4,
+                    "true_negative": 8,
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1_score": 0.0,
+                    "accuracy": 0.6667
+                },
+                "Baker's": {
+                    "true_positive": 0,
+                    "false_positive": 0,
+                    "false_negative": 3,
+                    "true_negative": 9,
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1_score": 0.0,
+                    "accuracy": 0.75
+                },
+                "Contusion": {
+                    "true_positive": 0,
+                    "false_positive": 0,
+                    "false_negative": 2,
+                    "true_negative": 10,
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1_score": 0.0,
+                    "accuracy": 0.8333
+                },
+                "Fracture": {
+                    "true_positive": 4,
+                    "false_positive": 8,
+                    "false_negative": 0,
+                    "true_negative": 0,
+                    "precision": 0.3333,
+                    "recall": 1.0,
+                    "f1_score": 0.5,
+                    "accuracy": 0.3333
+                }
+            }
+        }
+    }
+}

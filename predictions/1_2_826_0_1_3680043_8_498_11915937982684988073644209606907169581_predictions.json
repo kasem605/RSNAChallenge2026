@@ -1,0 +1,65 @@
+{
+    "run_timestamp_utc": "2026-10-09T20:50:15.621188+00:00",
+    "study_instance_uid": "1.2.826.0.1.3680043.8.498.11915937982684988073644209606907169581",
+    "checkpoint_path": "C:\\working_dir\\RSNA Challenge 2026\\Knee_Challenge_2026\\ish_knee_ai\\scripts\\checkpoints\\knee_3d_cnn_baseline_epoch_1.pt",
+    "checkpoint_epoch": 1,
+    "device": "cpu",
+    "threshold": 0.5,
+    "input_shape_per_plane": [
+        1,
+        64,
+        64,
+        64
+    ],
+    "predictions": {
+        "ACL": {
+            "probability": 0.414536,
+            "predicted_positive": 0
+        },
+        "MCL": {
+            "probability": 0.411748,
+            "predicted_positive": 0
+        },
+        "Medial Meniscus": {
+            "probability": 0.491958,
+            "predicted_positive": 0
+        },
+        "Lateral Meniscus": {
+            "probability": 0.4923,
+            "predicted_positive": 0
+        },
+        "Medial OA": {
+            "probability": 0.478549,
+            "predicted_positive": 0
+        },
+        "Lateral OA": {
+            "probability": 0.41951,
+            "predicted_positive": 0
+        },
+        "PF OA": {
+            "probability": 0.527294,
+            "predicted_positive": 1
+        },
+        "Effusion": {
+            "probability": 0.543719,
+            "predicted_positive": 1
+        },
+        "Synovitis": {
+            "probability": 0.524384,
+            "predicted_positive": 1
+        },
+        "Baker's": {
+            "probability": 0.469147,
+            "predicted_positive": 0
+        },
+        "Contusion": {
+            "probability": 0.444104,
+            "predicted_positive": 0
+        },
+        "Fracture": {
+            "probability": 0.471208,
+            "predicted_positive": 0
+        }
+    },
+    "note": "Exploratory baseline predictions; not validated for clinical use."
+}

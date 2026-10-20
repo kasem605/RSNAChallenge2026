@@ -1,0 +1,62 @@
+{
+    "training_study_count": 41,
+    "validation_study_count": 17,
+    "validation_fraction": 0.3,
+    "random_seed": 42,
+    "label_names": [
+        "ACL",
+        "MCL",
+        "Medial Meniscus",
+        "Lateral Meniscus",
+        "Medial OA",
+        "Lateral OA",
+        "PF OA",
+        "Effusion",
+        "Synovitis",
+        "Baker's",
+        "Contusion",
+        "Fracture"
+    ],
+    "positive_counts": {
+        "ACL": 16,
+        "MCL": 6,
+        "Medial Meniscus": 19,
+        "Lateral Meniscus": 16,
+        "Medial OA": 13,
+        "Lateral OA": 8,
+        "PF OA": 18,
+        "Effusion": 23,
+        "Synovitis": 22,
+        "Baker's": 9,
+        "Contusion": 15,
+        "Fracture": 12
+    },
+    "positive_weights": {
+        "ACL": 1.5625,
+        "MCL": 5.833333333333333,
+        "Medial Meniscus": 1.1578947368421053,
+        "Lateral Meniscus": 1.5625,
+        "Medial OA": 2.1538461538461537,
+        "Lateral OA": 4.125,
+        "PF OA": 1.2777777777777777,
+        "Effusion": 0.782608695652174,
+        "Synovitis": 0.8636363636363636,
+        "Baker's": 3.5555555555555554,
+        "Contusion": 1.7333333333333334,
+        "Fracture": 2.4166666666666665
+    },
+    "positive_weights_in_label_order": [
+        1.5625,
+        5.833333333333333,
+        1.1578947368421053,
+        1.5625,
+        2.1538461538461537,
+        4.125,
+        1.2777777777777777,
+        0.782608695652174,
+        0.8636363636363636,
+        3.5555555555555554,
+        1.7333333333333334,
+        2.4166666666666665
+    ]
+}

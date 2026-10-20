@@ -6,6 +6,7 @@ from ish_knee.preprocessing.volume.intensity_normalizer import IntensityNormaliz
 from pathlib import Path
 
 def main():
+
     print("=" * 70)
     print("INTENSITY NORMALIZER TEST")
     print("=" * 70)
@@ -14,28 +15,26 @@ def main():
     # Create synthetic volume
     # ---------------------------------------------------------------------
 
-    volume_data = np.arange(
-        1,
-        101,
-        dtype=np.float32
-    ).reshape(
-        4,
-        5,
-        5
+    original_array = np.array(
+        [
+            [
+                [10, 20, 30],
+                [40, 50, 60]
+            ],
+            [
+                [70, 80, 90],
+                [100, 110, 120]
+            ],
+        ],
+        dtype=np.int16
     )
 
     volume = DicomVolume(
         study_instance_uid="TEST-STUDY",
         series_instance_uid="TEST-SERIES",
-        volume=volume_data,
-        source_path=Path("test_series")
+        volume= original_array.copy(),
+        source_path=Path(r"D:\test")
     )
-
-    print()
-    print("Original volume")
-    print(f"Shape: {volume.shape}")
-    print(f"Mean: {volume.volume.mean():.4f}")
-    print(f"Std: {volume.volume.std():.4f}")
 
     # ----------------------------------------------------------
     # Nomalize
@@ -43,53 +42,135 @@ def main():
 
     normalizer = IntensityNormalizer()
 
-    normalized = normalizer.normalize(volume)
-
-    # ----------------------------------------------------------
-    # Display results
-    # ----------------------------------------------------------
+    result = normalizer.normalize(volume)
 
     print()
-    print("Normalized Volume")
-    print(f"Shape: {normalized.shape}")
-    print(f"Mean: {normalized.volume.mean():.6f}")
-    print(f"Std: {normalized.volume.std():.6f}")
-    print(f"Data type: {normalized.volume.dtype}")
+    print("Original shape:")
+    print(volume.volume.shape)
+
+    print()
+    print("Normalized shape:")
+    print(result.volume.shape)
+    
+    # ----------------------------------------------------------
+    # verify shape
+    # ----------------------------------------------------------
+
+    assert result.volume.shape == (
+        2,
+        2,
+        3
+    )
+
+    print("Shape: PASS")
 
     # ----------------------------------------------------------
-    # Validate
+    # verify data type
     # ----------------------------------------------------------
 
-    assert normalized.shape == volume.shape
+    assert result.volume.dtype == np.float32
 
-    assert normalized.volume.dtype == np.float32
+    print("Float32 output: PASS")
+
+    # ----------------------------------------------------------
+    # verify range
+    # ----------------------------------------------------------   
 
     assert np.isclose(
-        normalized.volume.mean(),
-        0.0,
-        atol=1e-6
+        result.volume.min(),
+        0.0
     )
 
     assert np.isclose(
-        normalized.volume.std(),
-        1.0,
-        atol=1e-6
+        result.volume.max(),
+        1.0
     )
 
-    # Original volume must remain unchanged
+    print("Normalized range [0, 1]: PASS")
 
-    assert np.array_equal(
-        volume.volume,
-        volume_data
+    # ----------------------------------------------------------
+    # verify known volumes
+    # ---------------------------------------------------------- 
+
+    assert np.isclose(result.volume[0, 0, 0], 0.0)
+
+    assert np.isclose(result.volume[1, 1, 2], 1.0)  
+
+    assert np.isclose(result.volume[0, 1, 1], 40.0 / 110.0) 
+
+    print("Normalized values: PASS")
+
+    # ----------------------------------------------------------
+    # verify metadata preservation
+    # ---------------------------------------------------------- 
+
+    assert result.study_instance_uid == "TEST-STUDY"
+
+    assert result.series_instance_uid == "TEST-SERIES"
+
+    assert result.source_path == Path(r"D:\test")
+
+    print("Metadata preservation: PASS")
+
+    # ----------------------------------------------------------
+    # verify original volume unchanged
+    # ----------------------------------------------------------  
+
+    assert np.array_equal(volume.volume, original_array)
+
+    print("Original volume unchanged: PASS")
+
+    # ----------------------------------------------------------
+    # verify numpy output
+    # ---------------------------------------------------------- 
+
+    assert isinstance(result.volume, np.ndarray)
+
+    print("Numpy output: PASS")
+
+    # ----------------------------------------------------------
+    # verify contiguous memory
+    # ----------------------------------------------------------   
+
+    assert result.volume.flags["C_CONTIGUOUS"]
+
+    print("Contiguous memory: PASS")
+
+    # ----------------------------------------------------------
+    # verify finite values
+    # ----------------------------------------------------------  
+
+    assert np.isfinite(result.volume).all()
+
+    print("Finite values: PASS")
+
+    # ----------------------------------------------------------
+    # Test constant-intensity volume
+    # ---------------------------------------------------------- 
+    
+    constant_array = np.full(
+        (2, 3, 4),
+        25.0,
+        dtype=np.float32
     )
 
-    print()
-    print("All assertions passed")
+    constant_volume = DicomVolume(
+            study_instance_uid="CONSTANT-STUDY",
+            series_instance_uid="CONSTANT-SERIES",
+            volume= constant_array,
+            source_path=Path(r"D:\test")
+        )
 
+    constant_result = normalizer.normalize(constant_volume)
+
+    assert np.all(constant_result.volume == 0.0)
+
+    print("Constant-intensity volume: PASS")
+    
     print()
+    print("=" * 70)
     print("INTENSITY NORMALIZER TEST PASSED")
-
-    print("*" * 70)
+    print("=" * 70)
 
 if __name__ == "__main__":
     main()

@@ -36,11 +36,11 @@ class DicomVolumeBuilder:
             axis=0
         )
 
-        sorce_path = ordered_slices[0].path.parent
+        source_path = ordered_slices[0].path.parent
 
         return DicomVolume(
             study_instance_uid=series.study_instance_uid,
             series_instance_uid=series.series_instance_uid,
             volume=volume,
-            source_path=sorce_path
+            source_path=source_path
         )

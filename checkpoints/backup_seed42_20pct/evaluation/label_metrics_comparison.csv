@@ -1,0 +1,13 @@
+﻿label,baseline_f1,weighted_f1,f1_difference,baseline_precision,weighted_precision,baseline_recall,weighted_recall,baseline_tp,weighted_tp,baseline_fp,weighted_fp,baseline_fn,weighted_fn
+ACL,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0,8,8
+MCL,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0,2,2
+Medial Meniscus,0.0,0.6667,0.6667,0.0,0.5,0.0,1.0,0,6,0,6,6,0
+Lateral Meniscus,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0,4,4
+Medial OA,0.0,0.2857,0.2857,0.0,0.1667,0.0,1.0,0,2,0,10,2,0
+Lateral OA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0,2,2
+PF OA,0.2857,0.2857,0.0,0.1667,0.1667,1.0,1.0,2,2,10,10,0,0
+Effusion,0.8571,0.8571,0.0,0.75,0.75,1.0,1.0,9,9,3,3,0,0
+Synovitis,0.5,0.0,-0.5,0.3333,0.0,1.0,0.0,4,0,8,0,0,4
+Baker's,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0,3,3
+Contusion,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,0,2,2
+Fracture,0.0,0.5,0.5,0.0,0.3333,0.0,1.0,0,4,0,8,4,0

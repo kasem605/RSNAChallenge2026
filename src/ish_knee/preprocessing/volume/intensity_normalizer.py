@@ -5,50 +5,48 @@ import numpy as np
 class IntensityNormalizer:
 
     """
-    Normalizes MRI volume intensities using
-    z-score normalization
+    Normalize the voxel intensities of a DICOM volume.
+
+    Default behavior:
+        Normalize the volume to the range [0,1]
+
+    Axis convention:
+        Axis 0 = depth / slice
+        Axis 1 = row / height
+        Axis 2 = column / width
     """
 
-    def normalize(self, volume: DicomVolume)-> DicomVolume:
-        """
-        Normalize the voxel intensities of a DICOM volume.
+    def normalize(self, volume: DicomVolume) -> DicomVolume:
 
-        The resulting volume has approximately 
-            mean = 0
-            standard devitaion = 1
+        if not isinstance(volume, DicomVolume):
+            raise TypeError("Expected a DicomVolume instance")
 
-        Returns:
-            A new DicomVolume containing the normalized data.
-        """
+        if volume.volume.ndim !=3:
+            raise ValueError("MRI volume must be 3-dimensionals")
 
         data = volume.volume.astype(
             np.float32,
-            copy = False
+            copy=False
         )
 
-        mean = np.mean(data)
-
-        std = np.std(data)
+        minimum = np.min(data)
+        maximum = np.max(data)
 
         # ----------------------------------------------------------
-        # Handle constant volumes
+        # Handle a constant-intensity volume
         # ----------------------------------------------------------
 
-        if std == 0:
-            normalized = np.zeros_like(
-                data,
-                dtype=np.float32
-            )
+        if maximum == minimum:
 
+            normalized = np.zeros_like(data, dtype=np.float32)
         else:
-            normalized = (
-                (data - mean) / std
-            ).astype(
-                np.float32
-            )
+
+            normalized = ((data - minimum) / (maximum - minimum))
+
+        normalized= np.ascontiguousarray(normalized, dtype=np.float32)
 
         return DicomVolume(
-            study_instance_uid=volume.series_instance_uid,
+            study_instance_uid=volume.study_instance_uid,
             series_instance_uid=volume.series_instance_uid,
             volume=normalized,
             source_path=volume.source_path
