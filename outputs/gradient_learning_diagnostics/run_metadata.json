@@ -1,0 +1,23 @@
+{
+  "checkpoint": "C:\\working_dir\\RSNA Challenge 2026\\Knee_Challenge_2026\\ish_knee_ai\\outputs\\training_lr001_30epochs\\lr_0.001\\best_model.pt",
+  "manifest": "C:\\working_dir\\RSNA Challenge 2026\\Knee_Challenge_2026\\ish_knee_ai\\outputs\\processed_dataset_v1\\manifest.csv",
+  "device": "cpu",
+  "training_studies_examined": 8,
+  "gradient_study_index": 0,
+  "optimizer_step_performed": false,
+  "checkpoint_modified": false,
+  "target_order": [
+    "acl",
+    "mcl",
+    "medial_meniscus",
+    "lateral_meniscus",
+    "medial_oa",
+    "lateral_oa",
+    "pf_oa",
+    "effusion",
+    "synovitis",
+    "bakers",
+    "contusion",
+    "fracture"
+  ]
+}

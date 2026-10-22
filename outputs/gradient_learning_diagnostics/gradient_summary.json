@@ -1,0 +1,10 @@
+{
+  "study_index": 0,
+  "loss": 0.7670115828514099,
+  "logit_mean": -0.48835909366607666,
+  "logit_std": 0.47664353251457214,
+  "probability_mean": 0.3864576518535614,
+  "parameters_with_gradients": 16,
+  "parameters_with_zero_gradient": 0,
+  "parameters_with_nonfinite_gradients": 0
+}

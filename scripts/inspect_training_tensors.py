@@ -14,7 +14,7 @@ import torch
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_ROOT = Path(r"D:\RSNA knee abnormality detection 2026")
 
-TARGET_SHAPE = (64, 64, 64)
+TARGET_SHAPE = (128, 128, 128)
 TARGET_SPACING = (1.0, 1.0, 1.0)
 NUMBER_OF_STUDIES_TO_INSPECT = 8
 NUMBER_OF_LABELS = 12

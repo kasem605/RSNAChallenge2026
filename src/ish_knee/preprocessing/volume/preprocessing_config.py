@@ -23,7 +23,7 @@ class PreprocessingConfig:
             raise TypeError("target_spacing must be a VoxelSpacing instance.")
 
         if len(self.target_shape) != 3:
-            raise ValueError("target_spacing must contain exactly three dimensions.")
+            raise ValueError("target_shape must contain exactly three dimensions.")
 
         if any(
             dimension <= 0

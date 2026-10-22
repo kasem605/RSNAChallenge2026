@@ -67,7 +67,7 @@ class KneeMRIDataset(Dataset):
     def __getitem__(
         self,
         index: int,
-    ) -> tuple[torch.Tensor, torch.Tensor]:
+    ) -> tuple[str, torch.Tensor, torch.Tensor]:
 
         row = self.samples[index]
         study_uid = row["study_instance_uid"]
@@ -137,4 +137,4 @@ class KneeMRIDataset(Dataset):
             np.asarray(labels_array, dtype=np.float32).copy()
         )
 
-        return images, labels
+        return study_uid, images, labels

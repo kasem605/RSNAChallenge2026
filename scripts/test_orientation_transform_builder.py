@@ -36,7 +36,7 @@ def main():
         row_direction=(1.0, 0.0, 0.0),
         column_direction=(0.0, 0.0, 1.0),
         slice_normal=(0.0, -1.0, 0.0),
-        anatomical_plane="axial"
+        anatomical_plane="coronal"
     )
 
     transformation = builder.build(orientation)

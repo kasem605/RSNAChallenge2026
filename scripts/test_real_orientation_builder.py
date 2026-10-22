@@ -77,86 +77,86 @@ def main():
             print("Series not available")
             continue
 
-    print()
-    print("-" * 70)
-    print(
-        f"ANATOMICAL PLANE: "
-        f"{selected.anatomical_plane}"
-    )
-    print("-" * 70)
-
-    print()
-    print("SERIES UID: ")
-    print(selected.series_instance_uid)
-
-    print()
-    print("Series path: ")
-    print(selected.series_path)
-
-    # -------------------------------------------------------------
-    # Read DICOM series
-    # -------------------------------------------------------------
-
-    series = reader.read(selected.series_path)
-
-    print()
-    print("Image count:")
-    print(series.image_count)
-
-    # -------------------------------------------------------------
-    # Analyze DICOM orientation
-    # -------------------------------------------------------------
-
-    orientation = analyzer.analyze(series)
-
-    print()
-    print("Orientation information:")
-
-    print("Row direction:   ", orientation.row_direction)
-
-    print("Column direction:    ", orientation.column_direction)
-
-    print("Slice normal:    ", orientation.slice_normal)
-
-    print("Calculated plane:    ", orientation.anatomical_plane)
-
-    print("Metadata plane:  ", orientation.anatomical_plane)
-
-    # -------------------------------------------------------------
-    # Verify anatomical plane
-    # -------------------------------------------------------------
-
-    if(orientation.anatomical_plane != selected.anatomical_plane):
         print()
-        print("WARNING: Calculated plane does not match metadata")
-    else:
+        print("-" * 70)
+        print(
+            f"ANATOMICAL PLANE: "
+            f"{selected.anatomical_plane}"
+        )
+        print("-" * 70)
+
         print()
-        print("Anatomical plane: PASS")
+        print("SERIES UID: ")
+        print(selected.series_instance_uid)
 
-    # -------------------------------------------------------------
-    # Build orientation transformation
-    # -------------------------------------------------------------
+        print()
+        print("Series path: ")
+        print(selected.series_path)
 
-    transformation = builder.build(orientation)
+        # -------------------------------------------------------------
+        # Read DICOM series
+        # -------------------------------------------------------------
+
+        series = reader.read(selected.series_path)
+
+        print()
+        print("Image count:")
+        print(series.image_count)
+
+        # -------------------------------------------------------------
+        # Analyze DICOM orientation
+        # -------------------------------------------------------------
+
+        orientation = analyzer.analyze(series)
+
+        print()
+        print("Orientation information:")
+
+        print("Row direction:   ", orientation.row_direction)
+
+        print("Column direction:    ", orientation.column_direction)
+
+        print("Slice normal:    ", orientation.slice_normal)
+
+        print("Metadata plane: ", selected.anatomical_plane)
+
+        print("Calculated plane:", orientation.anatomical_plane)
+
+        # -------------------------------------------------------------
+        # Verify anatomical plane
+        # -------------------------------------------------------------
+
+        if(orientation.anatomical_plane != selected.anatomical_plane):
+            print()
+            print("WARNING: Calculated plane does not match metadata")
+        else:
+            print()
+            print("Anatomical plane: PASS")
+
+        # -------------------------------------------------------------
+        # Build orientation transformation
+        # -------------------------------------------------------------
+
+        transformation = builder.build(orientation)
+
+        print()
+        print("Generated orientation transform")
+
+        print("Axis order:  ", transformation.axis_order)
+    
+        print("Flip axis 0:  ", transformation.flip_axis_0)
+    
+        print("Flip axis 1:  ", transformation.flip_axis_1)
+        
+        print("Flip axis 2:  ", transformation.flip_axis_2)
+
+        print()
+        print("Identity:  ", transformation.is_identity)
 
     print()
-    print("Generated orientation transform")
-
-    print("Axis order:  ", transformation.axis_order)
- 
-    print("Flip axis 0:  ", transformation.flip_axis_0)
-   
-    print("Flip axis 1:  ", transformation.flip_axis_1)
-     
-    print("Flip axis 2:  ", transformation.flip_axis_2)
-
-    print()
-    print("Identity:  ", transformation.is_identity)
-
-print()
-print("=" * 70)
-print("RAEL RSNA ORIENTATION BUILDER ETST COMPLETE")
-print("=" * 70)
+    print("=" * 70)
+    print("REAL RSNA ORIENTATION BUILDER TEST COMPLETE")
+    print("=" * 70)
        
            
 if __name__ == "__main__":

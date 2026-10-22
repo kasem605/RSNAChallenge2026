@@ -30,7 +30,7 @@ MANIFEST_PATH = (
     / "manifest.csv"
 )
 
-OUTPUT_DIR = PROJECT_ROOT / "outputs" / "training_phase3d"
+OUTPUT_DIR = PROJECT_ROOT / "outputs" / "training_phase3d_v2"
 
 EPOCHS = 10
 BATCH_SIZE = 1
@@ -63,7 +63,9 @@ def run_epoch(
     total_loss = 0.0
     total_samples = 0
 
-    for batch_index, (images, labels) in enumerate(loader, start=1):
+    for batch_index, (study_uids, images, labels) in enumerate(
+    loader, start=1
+    ):
         # Dataset images: (B, 3, D, H, W)
         # Model inputs:   (B, D, H, W) per plane.
         sagittal = images[:, 0]

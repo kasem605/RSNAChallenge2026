@@ -1,0 +1,3 @@
+experiment,checkpoint,training_objective_best_epoch,ordinary_validation_bce
+unweighted,C:\working_dir\RSNA Challenge 2026\Knee_Challenge_2026\ish_knee_ai\outputs\weighted_bce_comparison\unweighted\best_model.pt,8,0.6082671413234636
+weighted,C:\working_dir\RSNA Challenge 2026\Knee_Challenge_2026\ish_knee_ai\outputs\weighted_bce_comparison\weighted\best_model.pt,8,0.6938886034722421
