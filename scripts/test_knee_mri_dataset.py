@@ -40,7 +40,7 @@ def main() -> None:
     assert len(validation_dataset) == 17
 
     # Test a single training study.
-    images, labels = train_dataset[0]
+    study_uid, images, labels = train_dataset[0]
 
     print("\nSingle study:")
     print(f"Images shape: {tuple(images.shape)}")
@@ -67,7 +67,7 @@ def main() -> None:
         num_workers=0,
     )
 
-    batch_images, batch_labels = next(iter(loader))
+    batch_study_uids, batch_images, batch_labels = next(iter(loader))
 
     print("\nFirst batch:")
     print(f"Images shape: {tuple(batch_images.shape)}")
@@ -77,7 +77,7 @@ def main() -> None:
     assert batch_labels.shape == (1, 12)
 
     # Confirm validation samples load correctly too.
-    val_images, val_labels = validation_dataset[0]
+    val_study_uid, val_images, val_labels = validation_dataset[0]
 
     assert val_images.shape == (3, 128, 128, 128)
     assert val_labels.shape == (12,)

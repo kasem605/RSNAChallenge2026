@@ -28,3 +28,4 @@ class DicomSlice:
         float, float, float
     ] | None
     pixel_array: np.ndarray | None
+    pixel_spacing: tuple[float, float] | None

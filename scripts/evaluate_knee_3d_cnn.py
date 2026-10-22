@@ -17,14 +17,28 @@ from ish_knee.model.knee_3d_cnn import Knee3DCNN
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-DATASET_DIR = PROJECT_ROOT / "outputs" / "processed_dataset_v1"
-MANIFEST_PATH = DATASET_DIR / "manifest.csv"
+MANIFEST_PATH = (
+    PROJECT_ROOT
+    / "outputs"
+    / "processed_dataset_v1"
+    / "manifest.csv"
+)
 
-OUTPUT_DIR = PROJECT_ROOT / "outputs" / "training_phase3d"
-CHECKPOINT_PATH = OUTPUT_DIR / "knee_3d_cnn_best.pt"
+CHECKPOINT_PATH = (
+    PROJECT_ROOT
+    / "outputs"
+    / "training_phase3d_v2"
+    / "knee_3d_cnn_best.pt"
+)
 
-METRICS_PATH = OUTPUT_DIR / "validation_metrics_v2.csv"
-PREDICTIONS_PATH = OUTPUT_DIR / "validation_predictions_v2.csv"
+OUTPUT_DIR = (
+    PROJECT_ROOT
+    / "outputs"
+    / "evaluation_phase3e_v2"
+)
+
+METRICS_PATH = OUTPUT_DIR / "validation_metrics.csv"
+PREDICTIONS_PATH = OUTPUT_DIR / "validation_predictions.csv"
 
 BATCH_SIZE = 1
 THRESHOLD = 0.5
@@ -46,12 +60,7 @@ LABEL_NAMES = [
 
 
 def calculate_auc(y_true, y_score):
-    """
-    Calculate ROC-AUC using positive-negative pairs.
-
-    Returns None if the label has no positive or no
-    negative examples in the validation set.
-    """
+    """Calculate ROC-AUC; return None if one class is missing."""
 
     y_true = np.asarray(y_true, dtype=np.int64)
     y_score = np.asarray(y_score, dtype=np.float64)
@@ -67,19 +76,17 @@ def calculate_auc(y_true, y_score):
     )
 
     return float(
-        (np.sum(comparisons > 0) +
-         0.5 * np.sum(comparisons == 0))
-        / comparisons.size
+        (
+            np.sum(comparisons > 0)
+            + 0.5 * np.sum(comparisons == 0)
+        ) / comparisons.size
     )
 
 
 def calculate_metrics(y_true, y_prob):
-    """
-    Calculate per-label classification metrics.
-    """
+    """Calculate classification metrics for all 12 targets."""
 
     y_pred = (y_prob >= THRESHOLD).astype(np.int64)
-
     results = []
 
     for index, label_name in enumerate(LABEL_NAMES):
@@ -88,8 +95,8 @@ def calculate_metrics(y_true, y_prob):
 
         tp = int(np.sum((actual == 1) & (predicted == 1)))
         fp = int(np.sum((actual == 0) & (predicted == 1)))
-        fn = int(np.sum((actual == 1) & (predicted == 0)))
         tn = int(np.sum((actual == 0) & (predicted == 0)))
+        fn = int(np.sum((actual == 1) & (predicted == 0)))
 
         precision = tp / (tp + fp) if tp + fp else 0.0
         recall = tp / (tp + fn) if tp + fn else 0.0
@@ -99,8 +106,6 @@ def calculate_metrics(y_true, y_prob):
             if precision + recall
             else 0.0
         )
-
-        auc = calculate_auc(actual, y_prob[:, index])
 
         results.append({
             "label": label_name,
@@ -113,7 +118,7 @@ def calculate_metrics(y_true, y_prob):
             "precision": precision,
             "recall": recall,
             "f1": f1,
-            "roc_auc": auc,
+            "roc_auc": calculate_auc(actual, y_prob[:, index]),
         })
 
     return results
@@ -121,25 +126,20 @@ def calculate_metrics(y_true, y_prob):
 
 def main():
     # --------------------------------------------------
-    # Validate required files
+    # Validate files and protect previous results
     # --------------------------------------------------
 
-    if not MANIFEST_PATH.exists():
+    if not MANIFEST_PATH.is_file():
         raise FileNotFoundError(
             f"Dataset manifest not found: {MANIFEST_PATH}"
         )
 
-    if not CHECKPOINT_PATH.exists():
+    if not CHECKPOINT_PATH.is_file():
         raise FileNotFoundError(
             f"Best checkpoint not found: {CHECKPOINT_PATH}"
         )
 
-    # Protect previous evaluation results.
-    if METRICS_PATH.exists() or PREDICTIONS_PATH.exists():
-        raise FileExistsError(
-            "Evaluation output already exists. Rename the existing "
-            "evaluation CSV files before running again."
-        )
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=False)
 
     # --------------------------------------------------
     # Load validation dataset
@@ -150,6 +150,9 @@ def main():
         split="validation",
     )
 
+    if len(dataset) == 0:
+        raise RuntimeError("Validation dataset is empty.")
+
     loader = DataLoader(
         dataset,
         batch_size=BATCH_SIZE,
@@ -158,11 +161,11 @@ def main():
     )
 
     print("=" * 65)
-    print("KNEE 3D CNN MODEL EVALUATION")
+    print("PHASE 3E - KNEE 3D CNN EVALUATION")
     print("=" * 65)
     print(f"Checkpoint: {CHECKPOINT_PATH}")
     print(f"Validation studies: {len(dataset)}")
-    print(f"Probability threshold: {THRESHOLD}")
+    print(f"Threshold: {THRESHOLD}")
     print()
 
     # --------------------------------------------------
@@ -170,7 +173,6 @@ def main():
     # --------------------------------------------------
 
     device = torch.device("cpu")
-
     model = Knee3DCNN().to(device)
 
     checkpoint = torch.load(
@@ -192,31 +194,26 @@ def main():
     # --------------------------------------------------
     # Run validation predictions
     # --------------------------------------------------
-    
+
     all_study_uids = []
     all_logits = []
     all_labels = []
     all_probabilities = []
 
-    with torch.no_grad():
+    with torch.inference_mode():
         for study_uids, images, labels in loader:
-            all_study_uids.extend(study_uids)
-
             images = images.to(device)
             labels = labels.to(device)
 
-            sagittal = images[:, 0]
-            coronal = images[:, 1]
-            axial = images[:, 2]
-
             logits = model(
-                sagittal,
-                coronal,
-                axial,
+                images[:, 0],
+                images[:, 1],
+                images[:, 2],
             )
 
             probabilities = torch.sigmoid(logits)
 
+            all_study_uids.extend(study_uids)
             all_logits.append(logits.cpu())
             all_labels.append(labels.cpu())
             all_probabilities.append(probabilities.cpu())
@@ -226,41 +223,39 @@ def main():
     y_prob = torch.cat(all_probabilities, dim=0).numpy()
 
     if len(all_study_uids) != len(y_true):
-        raise ValueError(
-            "Study UID count does not match prediction count."
-        )
+        raise ValueError("Study UID count does not match predictions.")
 
     if len(set(all_study_uids)) != len(all_study_uids):
+        raise ValueError("Duplicate study UIDs found.")
+
+    if y_true.shape != y_prob.shape or y_true.shape[1] != len(LABEL_NAMES):
         raise ValueError(
-            "Duplicate study UIDs found in validation predictions."
+            f"Unexpected label/prediction shapes: "
+            f"{y_true.shape} and {y_prob.shape}"
         )
 
+    if not np.isfinite(y_prob).all():
+        raise ValueError("Predictions contain NaN or infinite values.")
 
-    # Mean BCE across all studies and all 12 labels.
     validation_bce = F.binary_cross_entropy_with_logits(
         torch.from_numpy(logits),
         torch.from_numpy(y_true),
-        reduction="mean",
     ).item()
 
     print(f"Validation BCE: {validation_bce:.6f}")
     print()
 
     # --------------------------------------------------
-    # Calculate metrics
+    # Calculate and display metrics
     # --------------------------------------------------
 
     metrics = calculate_metrics(y_true, y_prob)
 
     print("-" * 105)
     print(
-        f"{'Label':<20}"
-        f"{'Pos':>5}"
-        f"{'Neg':>5}"
-        f"{'Precision':>12}"
-        f"{'Recall':>10}"
-        f"{'F1':>10}"
-        f"{'ROC-AUC':>12}"
+        f"{'Label':<20}{'Pos':>5}{'Neg':>5}"
+        f"{'Precision':>12}{'Recall':>10}"
+        f"{'F1':>10}{'ROC-AUC':>12}"
     )
     print("-" * 105)
 
@@ -281,13 +276,11 @@ def main():
     print("-" * 105)
 
     # --------------------------------------------------
-    # Save per-label metrics
+    # Save metrics
     # --------------------------------------------------
 
     with METRICS_PATH.open(
-        "w",
-        newline="",
-        encoding="utf-8",
+        "w", newline="", encoding="utf-8"
     ) as file:
         writer = csv.DictWriter(
             file,
@@ -296,9 +289,8 @@ def main():
         writer.writeheader()
         writer.writerows(metrics)
 
-    
     # --------------------------------------------------
-    # Save predictions for every validation study
+    # Save actual labels, probabilities, and predictions
     # --------------------------------------------------
 
     prediction_fields = ["study_instance_uid"]
@@ -307,12 +299,13 @@ def main():
         prediction_fields.extend([
             f"{label_name}_actual",
             f"{label_name}_probability",
+            f"{label_name}_predicted",
         ])
 
+    y_pred = (y_prob >= THRESHOLD).astype(np.int64)
+
     with PREDICTIONS_PATH.open(
-        "w",
-        newline="",
-        encoding="utf-8",
+        "w", newline="", encoding="utf-8"
     ) as file:
         writer = csv.DictWriter(
             file,
@@ -329,15 +322,19 @@ def main():
                 output_row[f"{label_name}_actual"] = int(
                     y_true[row_index, label_index]
                 )
+
                 output_row[f"{label_name}_probability"] = (
                     f"{y_prob[row_index, label_index]:.6f}"
                 )
 
+                output_row[f"{label_name}_predicted"] = int(
+                    y_pred[row_index, label_index]
+                )
+
             writer.writerow(output_row)
 
-
     print()
-    print("Evaluation completed.")
+    print("Phase 3E evaluation completed.")
     print(f"Metrics:     {METRICS_PATH}")
     print(f"Predictions: {PREDICTIONS_PATH}")
     print("=" * 65)
