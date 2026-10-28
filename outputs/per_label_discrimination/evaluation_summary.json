@@ -1,0 +1,36 @@
+{
+  "checkpoint": "C:\\working_dir\\RSNA Challenge 2026\\Knee_Challenge_2026\\ish_knee_ai\\outputs\\training_lr001_30epochs\\lr_0.001\\best_model.pt",
+  "manifest": "C:\\working_dir\\RSNA Challenge 2026\\Knee_Challenge_2026\\ish_knee_ai\\outputs\\processed_dataset_v1\\manifest.csv",
+  "device": "cpu",
+  "label_order": [
+    "acl",
+    "mcl",
+    "medial_meniscus",
+    "lateral_meniscus",
+    "medial_oa",
+    "lateral_oa",
+    "pf_oa",
+    "effusion",
+    "synovitis",
+    "bakers",
+    "contusion",
+    "fracture"
+  ],
+  "train_studies": 41,
+  "validation_studies": 17,
+  "train_prevalence": {
+    "acl": 0.3902439024390244,
+    "mcl": 0.14634146341463414,
+    "medial_meniscus": 0.4634146341463415,
+    "lateral_meniscus": 0.3902439024390244,
+    "medial_oa": 0.3170731707317073,
+    "lateral_oa": 0.1951219512195122,
+    "pf_oa": 0.43902439024390244,
+    "effusion": 0.5609756097560976,
+    "synovitis": 0.5365853658536586,
+    "bakers": 0.21951219512195122,
+    "contusion": 0.36585365853658536,
+    "fracture": 0.2926829268292683
+  },
+  "note": "Validation metrics are uncertain because the validation set is small. ROC-AUC is undefined if a split contains only one class for a label. AP is undefined here when there are no positive examples."
+}

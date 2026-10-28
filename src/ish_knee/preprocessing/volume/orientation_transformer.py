@@ -29,16 +29,24 @@ class OrientationTransformer:
         if volume.volume.ndim != 3:
             raise ValueError("MRI volume must be 3-dimensional.")
 
-        transformed_volume = np.array(
-            volume.volume,
-            copy=True
-        )
+        # transformed_volume = np.array(
+        #     volume.volume,
+        #     copy=True
+        # )
 
 
         # ----------------------------------------------------------------
         # Step 1: Permute the axis
         # ----------------------------------------------------------------
 
+        if (
+            len(transformation.axis_order) != 3
+            or set(transformation.axis_order) != {0, 1, 2}
+        ):
+            raise ValueError(
+                "axis_order must be a permutation of (0, 1, 2)."
+            )
+        
         transformed_volume = np.transpose(
             volume.volume,
             axes = transformation.axis_order

@@ -1,0 +1,193 @@
+{
+    "run_timestamp_utc": "2026-10-18T23:47:13.149157+00:00",
+    "device": "cpu",
+    "dataset_root": "D:\\RSNA knee abnormality detection 2026",
+    "subset_size": 8,
+    "optimizer_updates": 200,
+    "learning_rate": 0.001,
+    "selected_training_study_uids": [
+        "1.2.826.0.1.3680043.8.498.22109739962224309418874538994436903404",
+        "1.2.826.0.1.3680043.8.498.73926443729786165628848843707532839995",
+        "1.2.826.0.1.3680043.8.498.11382021393803389951964005983002209238",
+        "1.2.826.0.1.3680043.8.498.37040910196459054543310335064167212742",
+        "1.2.826.0.1.3680043.8.498.12448079646359892252441208258836556945",
+        "1.2.826.0.1.3680043.8.498.62465595376489211274225312453216559395",
+        "1.2.826.0.1.3680043.8.498.25695966186129395049687747156570466645",
+        "1.2.826.0.1.3680043.8.498.97274720257634584071500649275217521662"
+    ],
+    "label_names": [
+        "ACL",
+        "MCL",
+        "Medial Meniscus",
+        "Lateral Meniscus",
+        "Medial OA",
+        "Lateral OA",
+        "PF OA",
+        "Effusion",
+        "Synovitis",
+        "Baker's",
+        "Contusion",
+        "Fracture"
+    ],
+    "positive_class_weights": [
+        1.5625,
+        5.833333492279053,
+        1.1578947305679321,
+        1.5625,
+        2.153846263885498,
+        4.125,
+        1.2777777910232544,
+        1.0,
+        1.0,
+        3.555555582046509,
+        1.7333333492279053,
+        2.4166667461395264
+    ],
+    "initial_weighted_subset_loss": 0.914585255086422,
+    "final_weighted_subset_loss": 0.7953251525759697,
+    "loss_history": [
+        {
+            "update": 0,
+            "weighted_subset_loss": 0.914585255086422
+        },
+        {
+            "update": 20,
+            "weighted_subset_loss": 0.9108205810189247
+        },
+        {
+            "update": 40,
+            "weighted_subset_loss": 0.9063559919595718
+        },
+        {
+            "update": 60,
+            "weighted_subset_loss": 0.8999863564968109
+        },
+        {
+            "update": 80,
+            "weighted_subset_loss": 0.888830229640007
+        },
+        {
+            "update": 100,
+            "weighted_subset_loss": 0.8731930032372475
+        },
+        {
+            "update": 120,
+            "weighted_subset_loss": 0.851551927626133
+        },
+        {
+            "update": 140,
+            "weighted_subset_loss": 0.8340821787714958
+        },
+        {
+            "update": 160,
+            "weighted_subset_loss": 0.8231871947646141
+        },
+        {
+            "update": 180,
+            "weighted_subset_loss": 0.8092154413461685
+        },
+        {
+            "update": 200,
+            "weighted_subset_loss": 0.7953251525759697
+        }
+    ],
+    "per_label_predictions_threshold_0_5": {
+        "ACL": {
+            "positive_targets": 4,
+            "predicted_positive": 8,
+            "tp": 4,
+            "fp": 4,
+            "fn": 0,
+            "tn": 0
+        },
+        "MCL": {
+            "positive_targets": 1,
+            "predicted_positive": 1,
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "tn": 7
+        },
+        "Medial Meniscus": {
+            "positive_targets": 6,
+            "predicted_positive": 8,
+            "tp": 6,
+            "fp": 2,
+            "fn": 0,
+            "tn": 0
+        },
+        "Lateral Meniscus": {
+            "positive_targets": 3,
+            "predicted_positive": 0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 3,
+            "tn": 5
+        },
+        "Medial OA": {
+            "positive_targets": 2,
+            "predicted_positive": 0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "tn": 6
+        },
+        "Lateral OA": {
+            "positive_targets": 2,
+            "predicted_positive": 5,
+            "tp": 2,
+            "fp": 3,
+            "fn": 0,
+            "tn": 3
+        },
+        "PF OA": {
+            "positive_targets": 2,
+            "predicted_positive": 0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "tn": 6
+        },
+        "Effusion": {
+            "positive_targets": 4,
+            "predicted_positive": 8,
+            "tp": 4,
+            "fp": 4,
+            "fn": 0,
+            "tn": 0
+        },
+        "Synovitis": {
+            "positive_targets": 6,
+            "predicted_positive": 8,
+            "tp": 6,
+            "fp": 2,
+            "fn": 0,
+            "tn": 0
+        },
+        "Baker's": {
+            "positive_targets": 2,
+            "predicted_positive": 5,
+            "tp": 2,
+            "fp": 3,
+            "fn": 0,
+            "tn": 3
+        },
+        "Contusion": {
+            "positive_targets": 2,
+            "predicted_positive": 0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "tn": 6
+        },
+        "Fracture": {
+            "positive_targets": 3,
+            "predicted_positive": 8,
+            "tp": 3,
+            "fp": 5,
+            "fn": 0,
+            "tn": 0
+        }
+    },
+    "checkpoint_path": "C:\\working_dir\\RSNA Challenge 2026\\Knee_Challenge_2026\\ish_knee_ai\\checkpoints\\overfit_diagnostic\\small_subset_overfit_model.pt"
+}

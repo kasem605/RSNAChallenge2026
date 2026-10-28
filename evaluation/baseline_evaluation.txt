@@ -1,0 +1,158 @@
+RSNA KNEE AI — BASELINE EVALUATION
+=================================================================
+Run timestamp (UTC): 2026-10-09T17:58:51.623713+00:00
+Device: cpu
+Epochs configured: 1
+Batch size: 1
+Learning rate: 0.001
+Random seed: 42
+
+DATASET SUMMARY
+-----------------------------------------------------------------
+Fully labeled studies: 58
+Training studies: 46
+Validation studies: 12
+Validation fraction: 0.2
+Target spacing: [1.0, 1.0, 1.0]
+Target shape: [64, 64, 64]
+
+TRAINING AND VALIDATION LOSS
+-----------------------------------------------------------------
+Epoch 1 training loss: 0.681356
+Validation loss: 0.662634
+
+PER-LABEL METRICS
+-----------------------------------------------------------------
+
+ACL
+  true_positive: 0
+  false_positive: 0
+  false_negative: 8
+  true_negative: 4
+  precision: 0.0
+  recall: 0.0
+  f1_score: 0.0
+  accuracy: 0.3333
+
+MCL
+  true_positive: 0
+  false_positive: 0
+  false_negative: 2
+  true_negative: 10
+  precision: 0.0
+  recall: 0.0
+  f1_score: 0.0
+  accuracy: 0.8333
+
+Medial Meniscus
+  true_positive: 0
+  false_positive: 0
+  false_negative: 6
+  true_negative: 6
+  precision: 0.0
+  recall: 0.0
+  f1_score: 0.0
+  accuracy: 0.5
+
+Lateral Meniscus
+  true_positive: 0
+  false_positive: 0
+  false_negative: 4
+  true_negative: 8
+  precision: 0.0
+  recall: 0.0
+  f1_score: 0.0
+  accuracy: 0.6667
+
+Medial OA
+  true_positive: 2
+  false_positive: 10
+  false_negative: 0
+  true_negative: 0
+  precision: 0.1667
+  recall: 1.0
+  f1_score: 0.2857
+  accuracy: 0.1667
+
+Lateral OA
+  true_positive: 0
+  false_positive: 0
+  false_negative: 2
+  true_negative: 10
+  precision: 0.0
+  recall: 0.0
+  f1_score: 0.0
+  accuracy: 0.8333
+
+PF OA
+  true_positive: 0
+  false_positive: 0
+  false_negative: 2
+  true_negative: 10
+  precision: 0.0
+  recall: 0.0
+  f1_score: 0.0
+  accuracy: 0.8333
+
+Effusion
+  true_positive: 9
+  false_positive: 3
+  false_negative: 0
+  true_negative: 0
+  precision: 0.75
+  recall: 1.0
+  f1_score: 0.8571
+  accuracy: 0.75
+
+Synovitis
+  true_positive: 4
+  false_positive: 8
+  false_negative: 0
+  true_negative: 0
+  precision: 0.3333
+  recall: 1.0
+  f1_score: 0.5
+  accuracy: 0.3333
+
+Baker's
+  true_positive: 0
+  false_positive: 0
+  false_negative: 3
+  true_negative: 9
+  precision: 0.0
+  recall: 0.0
+  f1_score: 0.0
+  accuracy: 0.75
+
+Contusion
+  true_positive: 0
+  false_positive: 0
+  false_negative: 2
+  true_negative: 10
+  precision: 0.0
+  recall: 0.0
+  f1_score: 0.0
+  accuracy: 0.8333
+
+Fracture
+  true_positive: 0
+  false_positive: 0
+  false_negative: 4
+  true_negative: 8
+  precision: 0.0
+  recall: 0.0
+  f1_score: 0.0
+  accuracy: 0.6667
+
+CHECKPOINT
+-----------------------------------------------------------------
+Checkpoint path: C:\working_dir\RSNA Challenge 2026\Knee_Challenge_2026\ish_knee_ai\checkpoints\knee_3d_cnn_baseline_epoch_1.pt
+
+INTERPRETATION
+-----------------------------------------------------------------
+This is an exploratory baseline, not a clinically validated model.
+The validation set is small, so per-label metrics are unstable.
+Zero true positives can indicate that the model is predicting
+all-negative results for a label at the current threshold.
+Review class balance and prediction probabilities before
+changing thresholds or drawing performance conclusions.

@@ -1,0 +1,2 @@
+experiment,learning_rate,best_epoch,best_validation_bce,final_train_bce
+lr_0.001,0.001,8,0.6082671372329488,0.615245661357554

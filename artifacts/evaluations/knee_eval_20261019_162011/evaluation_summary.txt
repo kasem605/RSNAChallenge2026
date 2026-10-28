@@ -1,0 +1,20 @@
+RSNA Knee Model Evaluation
+========================================
+checkpoint_epoch: 8
+checkpoint_validation_loss: 0.6082671372329488
+validation_studies: 17
+threshold: 0.5
+
+Per-label results:
+ACL: positive=8, negative=9, sensitivity=0.0000, specificity=1.0000, precision=nan, F1=nan, AUC=0.6250
+MCL: positive=3, negative=14, sensitivity=0.0000, specificity=1.0000, precision=nan, F1=nan, AUC=0.3095
+Medial Meniscus: positive=7, negative=10, sensitivity=0.0000, specificity=1.0000, precision=nan, F1=nan, AUC=0.7286
+Lateral Meniscus: positive=7, negative=10, sensitivity=0.0000, specificity=1.0000, precision=nan, F1=nan, AUC=0.3000
+Medial OA: positive=2, negative=15, sensitivity=0.0000, specificity=1.0000, precision=nan, F1=nan, AUC=0.4333
+Lateral OA: positive=3, negative=14, sensitivity=0.0000, specificity=1.0000, precision=nan, F1=nan, AUC=0.4286
+PF OA: positive=3, negative=14, sensitivity=0.0000, specificity=1.0000, precision=nan, F1=nan, AUC=0.4286
+Effusion: positive=12, negative=5, sensitivity=1.0000, specificity=0.0000, precision=0.7059, F1=0.8276, AUC=0.6500
+Synovitis: positive=5, negative=12, sensitivity=1.0000, specificity=0.0000, precision=0.2941, F1=0.4545, AUC=0.4667
+Baker's: positive=3, negative=14, sensitivity=0.0000, specificity=1.0000, precision=nan, F1=nan, AUC=0.1667
+Contusion: positive=4, negative=13, sensitivity=0.0000, specificity=1.0000, precision=nan, F1=nan, AUC=0.4808
+Fracture: positive=6, negative=11, sensitivity=0.0000, specificity=1.0000, precision=nan, F1=nan, AUC=0.4394
